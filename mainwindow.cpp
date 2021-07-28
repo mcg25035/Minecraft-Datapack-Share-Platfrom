@@ -112,6 +112,17 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
         data_before_send+="security_data="+encryption.encode(QString(reg_data).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64()+"&id="+id;
         return post("register",data_before_send);
     }
+    if (connect_type == "Login"){
+        QString reg_data = QString("{\"username\":\""+ui->LR_username->text()+"\",\"password\":\""+QCryptographicHash::hash(ui->LR_password->text().toUtf8(),QCryptographicHash::Sha256).toHex()+"\"}");
+        encryption.encode(QString(reg_data).toUtf8().toBase64(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
+        QByteArray data_before_send = "";
+        data_before_send+="security_data="+encryption.encode(QString(reg_data).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64()+"&id="+id;
+        QString data_recv = post("login",data_before_send);
+        if (data_recv.contains("SUCESS")){
+            usertoken = encryption.decode(QString(data_recv.split(",").at(1)).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
+        }
+        return data_recv();
+    }
 
 }
 
