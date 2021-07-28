@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>LANG.png</file>
+        <file>TITLE_PAGE.png</file>
+        <file>AD.png</file>
+        <file>Deafault_Background.png</file>
+        <file>user_icon.png</file>
+        <file>no_image.png</file>
+    </qresource>
+</RCC>
