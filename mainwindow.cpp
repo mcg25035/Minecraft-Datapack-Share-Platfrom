@@ -22,13 +22,14 @@ QString private_key;
 QString sign_id;
 QString usertoken;
 QString username;
-QString server_url = "https://script.google.com/macros/s/AKfycbwTAOLr2Z724nLfxQfUeB_JO5CQRnumRUqdq_N8N4rdvmO7xcYogQ4Ug8vbL1nlY4BR/exec";
+QString server_url = "https://script.google.com/macros/s/AKfycbxJ7aua4lqMEnUecOa7IhNdqetZOnoAwtAVNyNMuwuGSHiP_9DsvMV1-Cl3AJ_pqCBv/exec";
 
 QString AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
 void MainWindow::test(QString params){
     qDebug()<<params;
 }
 QString post(QString connect_type,QByteArray connect_arg=QString("").toUtf8()){
+    qsrand(QTime::currentTime().msec());
     qDebug()<<connect_arg;
     QEventLoop eventLoop;
     QNetworkAccessManager nam;
@@ -119,9 +120,12 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
         data_before_send+="security_data="+encryption.encode(QString(reg_data).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64()+"&id="+id;
         QString data_recv = post("login",data_before_send);
         if (data_recv.contains("SUCESS")){
-            usertoken = encryption.decode(QString(data_recv.split(",").at(1)).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
+            qDebug()<<"token";
+            qDebug()<<data_recv;
+            usertoken = encryption.decode(QByteArray::fromBase64(data_recv.split(",").at(1).toUtf8()),QString(private_key).toUtf8(),QString(private_key).toUtf8()).replace("\u0010","");
+            return "SUCESS";
         }
-        return data_recv();
+        return data_recv;
     }
 
 }
@@ -308,6 +312,24 @@ void MainWindow::on_LR_Trigger_clicked()
         }
         if (status=="ERR.REGED"){
             ui->LR_status->setText("註冊失敗，已經有同帳號使用者存在!");
+            return;
+        }
+        qDebug()<<status;
+        QMessageBox messageBox2;
+        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        exit(0);
+
+    }
+    if (ui->Login->isChecked()){
+        ui->LR_status->setText("執行伺服器溝通...");
+        QString status = MainWindow::connect("Login");
+        if (status=="SUCESS"){
+            ui->LR_status->setText("登入成功!");
+            qDebug()<<usertoken;
+            return;
+        }
+        if (status=="ERR.USRORPWD"){
+            ui->LR_status->setText("帳號或密碼錯誤");
             return;
         }
         qDebug()<<status;
