@@ -8,6 +8,7 @@
 #include <QDesktopServices>
 #include <QInputDialog>
 #include <QJsonObject>
+#include <QJsonDocument>
 #include <QJsonArray>
 #include <QDir>
 #include <QtNetwork/QNetworkAccessManager>
@@ -22,11 +23,22 @@ QString private_key;
 QString sign_id;
 QString usertoken;
 QString username;
-QString server_url = "https://script.google.com/macros/s/AKfycbxJ7aua4lqMEnUecOa7IhNdqetZOnoAwtAVNyNMuwuGSHiP_9DsvMV1-Cl3AJ_pqCBv/exec";
-
+QJsonObject userdata;
+QString server_url = "https://script.google.com/macros/s/AKfycbzmTAYzfnYjZosls_KtDRlX2sg_D-E26ft_GApAWg683RMpGbJPko4o8J3I_T8eLi4/exec";
+bool trial_mode= true;
 QString AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
 void MainWindow::test(QString params){
     qDebug()<<params;
+}
+QJsonObject StringToJson(QString str){
+        QJsonObject obj;
+        QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+        if(!doc.isNull()){
+            if(doc.isObject()){
+                obj = doc.object();
+            }
+        }
+        return obj;
 }
 QString post(QString connect_type,QByteArray connect_arg=QString("").toUtf8()){
     qsrand(QTime::currentTime().msec());
@@ -127,6 +139,20 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
         }
         return data_recv;
     }
+    if (connect_type == "GET_USR_DATA"){
+        if (trial_mode){
+            QByteArray data_before_send = "";
+            data_before_send += "target_username="+arg;
+            QString data_recv = post("get_userdata",data_before_send);
+            return data_recv;
+        }else{
+            QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
+            QByteArray data_before_send = "";
+            data_before_send += "token="+token_before_send+"&username="+username+"&target_username="+arg+"&id="+id;
+            QString data_recv = post("get_userdata",data_before_send);
+            return data_recv;
+        }
+    }
 
 }
 
@@ -201,8 +227,7 @@ MainWindow::MainWindow(QWidget *parent)
     */
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
 }
 
@@ -211,28 +236,23 @@ void MainWindow::on_pushButton_2_clicked()
     std::cout<<"hi"<<std::endl;
 }
 
-void MainWindow::on_userdatasetR_valueChanged()
-{
+void MainWindow::on_userdatasetR_valueChanged(){
     ui->userselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->userdatasetR->value())+","+QString::number(ui->userdatasetG->value())+","+QString::number(ui->userdatasetB->value())+","+QString::number(ui->userdatasetA->value())+") ; border-radius:25px;");
 }
 
-void MainWindow::on_userdatasetG_valueChanged()
-{
+void MainWindow::on_userdatasetG_valueChanged(){
     ui->userselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->userdatasetR->value())+","+QString::number(ui->userdatasetG->value())+","+QString::number(ui->userdatasetB->value())+","+QString::number(ui->userdatasetA->value())+") ; border-radius:25px;");
 }
 
-void MainWindow::on_userdatasetB_valueChanged()
-{
+void MainWindow::on_userdatasetB_valueChanged(){
     ui->userselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->userdatasetR->value())+","+QString::number(ui->userdatasetG->value())+","+QString::number(ui->userdatasetB->value())+","+QString::number(ui->userdatasetA->value())+") ; border-radius:25px;");
 }
 
-void MainWindow::on_userdatasetA_valueChanged()
-{
+void MainWindow::on_userdatasetA_valueChanged(){
     ui->userselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->userdatasetR->value())+","+QString::number(ui->userdatasetG->value())+","+QString::number(ui->userdatasetB->value())+","+QString::number(ui->userdatasetA->value())+") ; border-radius:25px;");
 }
 
-void MainWindow::on_pushButton_4_clicked()
-{
+void MainWindow::on_pushButton_4_clicked(){
     //QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
     QString text = QInputDialog::getText(this," ","我們已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在5分鐘內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
@@ -243,8 +263,7 @@ void MainWindow::on_pushButton_4_clicked()
     ui->status->setText("");
 }
 
-void MainWindow::on_pushButton_6_clicked()
-{
+void MainWindow::on_pushButton_6_clicked(){
     QString text = QInputDialog::getText(this," ","我們已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在5分鐘內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
     if (text != ""){
@@ -253,9 +272,38 @@ void MainWindow::on_pushButton_6_clicked()
     }
     ui->status->setText("");
 }
+void MainWindow::change_to_homepage(){
 
-void MainWindow::on_pushButton_5_clicked()
-{
+}
+
+void MainWindow::after_login_init(){
+    ui->AppContainer->setCurrentWidget(ui->AppPage);
+    if (trial_mode){
+        change_to_homepage();
+    }else{
+        QString user_data = connect("GET_USR_DATA",username);
+        if (user_data.contains("SUCESS")){
+            qDebug()<<user_data;
+            user_data = user_data.split("**mdsp_split_tag**").at(1);
+            qDebug()<<user_data;
+            if (user_data==""){
+                ui->Page->setCurrentWidget(ui->set_user_data_page);
+            }else{
+                userdata = StringToJson(user_data);
+                change_to_homepage();
+            }
+        }else{
+            qDebug()<<user_data;
+            QMessageBox messageBox2;
+            messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+            exit(0);
+        }
+    }
+}
+
+
+
+void MainWindow::on_pushButton_5_clicked(){
     //my_page_edit.insert("name","")
     if (ui->setpage_username->text()=="" || ui->setpage_username->text().length()>=16){
         QMessageBox msgBox;
@@ -330,6 +378,7 @@ void MainWindow::on_LR_Trigger_clicked()
 
     }
     if (ui->Login->isChecked()){
+        username = ui->LR_username->text();
         ui->LR_status->setText("執行伺服器溝通...");
         for (int i=1;i<=ui->LR_username->text().length();i++){
             if (!QString("0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~").contains(ui->LR_username->text().at(i-1))){
@@ -340,7 +389,9 @@ void MainWindow::on_LR_Trigger_clicked()
         QString status = MainWindow::connect("Login");
         if (status=="SUCESS"){
             ui->LR_status->setText("登入成功!");
+            trial_mode = false;
             qDebug()<<usertoken;
+            after_login_init();
             return;
         }
         if (status=="ERR.USRORPWD"){

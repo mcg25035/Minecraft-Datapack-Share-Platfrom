@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QStackedWidget" name="stackedWidget">
+   <widget class="QStackedWidget" name="AppContainer">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -26,7 +26,7 @@
     <property name="currentIndex">
      <number>1</number>
     </property>
-    <widget class="QWidget" name="page">
+    <widget class="QWidget" name="AppPage">
      <widget class="QStackedWidget" name="Page">
       <property name="geometry">
        <rect>
@@ -39,7 +39,7 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="page_3">
+      <widget class="QWidget" name="home_page">
        <widget class="QLineEdit" name="lineEdit">
         <property name="geometry">
          <rect>
@@ -256,7 +256,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_4">
+      <widget class="QWidget" name="set_user_data_page">
        <widget class="QLabel" name="background_setuserpage">
         <property name="geometry">
          <rect>
@@ -374,7 +374,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QWidget" name="scrollAreaWidgetContents">
          <property name="geometry">
           <rect>
-           <x>-60</x>
+           <x>0</x>
            <y>0</y>
            <width>1000</width>
            <height>56</height>
@@ -701,7 +701,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_2">
+    <widget class="QWidget" name="Login_RegisterPage">
      <widget class="QLabel" name="Username">
       <property name="geometry">
        <rect>

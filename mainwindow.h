@@ -27,6 +27,8 @@ private slots:
     void on_pushButton_5_clicked();
     QString connect(QString connect_type,QString arg);
     void on_LR_Trigger_clicked();
+    void after_login_init();
+    void change_to_homepage();
 
 private:
     Ui::MainWindow *ui;
