@@ -304,6 +304,15 @@ void MainWindow::on_LR_Trigger_clicked()
             ui->LR_status->setText("");
             return;
         }
+        ui->LR_status->setText("執行帳號字元檢查...");
+        for (int i=1;i<=ui->LR_username->text().length();i++){
+            if (!QString("0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~").contains(ui->LR_username->text().at(i-1))){
+                QMessageBox messageBox;
+                messageBox.warning(0,"錯誤","帳號僅限於以下字元\n0~9、a~z、A~Z、:;<=>[\\]^_'{|}~@");
+                ui->LR_status->setText("");
+                return;
+            }
+        }
         ui->LR_status->setText("執行伺服器溝通...");
         QString status = MainWindow::connect("Register");
         if (status=="SUCESS"){
@@ -322,6 +331,12 @@ void MainWindow::on_LR_Trigger_clicked()
     }
     if (ui->Login->isChecked()){
         ui->LR_status->setText("執行伺服器溝通...");
+        for (int i=1;i<=ui->LR_username->text().length();i++){
+            if (!QString("0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~").contains(ui->LR_username->text().at(i-1))){
+                ui->LR_status->setText("帳號或密碼錯誤");
+                return;
+            }
+        }
         QString status = MainWindow::connect("Login");
         if (status=="SUCESS"){
             ui->LR_status->setText("登入成功!");
