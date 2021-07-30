@@ -17,7 +17,7 @@
 #include <QCryptographicHash>
 #include <QMessageBox>
 #include <QTime>
-
+QString os_type = QSysInfo::kernelType();
 QJsonObject my_page_edit;
 QString private_key;
 QString sign_id;
@@ -26,7 +26,7 @@ QString username;
 QJsonObject userdata;
 QString server_url = "https://script.google.com/macros/s/AKfycbxhEj1WjpCyuOXlvSm3XoDnS7jaMhNQ0dSBUru7OCjKpQ4CMypUfuffoTKcc5hDTrpG/exec";
 bool trial_mode= true;
-QString AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
+QString AppDir;
 void MainWindow::test(QString params){
     qDebug()<<params;
 }
@@ -210,6 +210,30 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap big_user_icon = row_user_icon.scaled(51,51);
     ui->usericon->setPixmap(big_user_icon);
     ui->user_icon_setting->setPixmap(big_user_icon);
+    if (os_type=="winnt"){
+        AppDir = qgetenv("APPDATA")+"/.Minecraft_Datapack_Share_Platfrom";
+        if (!QDir(AppDir).exists()){
+            QDir(qgetenv("APPDATA")).mkdir(".Minecraft_Datapack_Share_Platfrom");
+        }
+    }
+    else if (os_type=="linux"){
+        AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
+        if (!QDir(AppDir).exists()){
+            QDir(qgetenv("HOME")).mkdir(".Minecraft_Datapack_Share_Platfrom");
+        }
+    }
+    else if (os_type=="darwin"){
+        AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
+        if (!QDir(AppDir).exists()){
+            QDir(qgetenv("HOME")).mkdir(".Minecraft_Datapack_Share_Platfrom");
+        }
+    }
+    else{
+        AppDir = QDir::currentPath()+"/.Minecraft_Datapack_Share_Platfrom";
+        if (!QDir(AppDir).exists()){
+            QDir::currentPath().mkdir(".Minecraft_Datapack_Share_Platfrom");
+        }
+    }
 
     /*
     QPushButton *button[10];
