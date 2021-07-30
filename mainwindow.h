@@ -29,6 +29,9 @@ private slots:
     void on_LR_Trigger_clicked();
     void after_login_init();
     void change_to_homepage();
+    void app_init();
+    void login_page_init();
+    void back_to_login_page();
 
 private:
     Ui::MainWindow *ui;

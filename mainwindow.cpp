@@ -24,7 +24,7 @@ QString sign_id;
 QString usertoken;
 QString username;
 QJsonObject userdata;
-QString server_url = "https://script.google.com/macros/s/AKfycbzmTAYzfnYjZosls_KtDRlX2sg_D-E26ft_GApAWg683RMpGbJPko4o8J3I_T8eLi4/exec";
+QString server_url = "https://script.google.com/macros/s/AKfycbxhEj1WjpCyuOXlvSm3XoDnS7jaMhNQ0dSBUru7OCjKpQ4CMypUfuffoTKcc5hDTrpG/exec";
 bool trial_mode= true;
 QString AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
 void MainWindow::test(QString params){
@@ -153,7 +153,14 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
             return data_recv;
         }
     }
-
+    if (connect_type == "set_userdata"){
+        QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
+        QByteArray data_before_send = "";
+        data_before_send += "token="+token_before_send+"&username="+username+"&id="+id+"&userdata="+QJsonDocument(my_page_edit).toJson(QJsonDocument::Compact).toBase64();
+        QString data_recv = post("set_userdata",data_before_send);
+        return data_recv;
+    }
+    return QString("");
 }
 
 
@@ -277,11 +284,12 @@ void MainWindow::change_to_homepage(){
 }
 
 void MainWindow::after_login_init(){
-    ui->AppContainer->setCurrentWidget(ui->AppPage);
     if (trial_mode){
         change_to_homepage();
     }else{
+        ui->status->setText("執行伺服器溝通...");
         QString user_data = connect("GET_USR_DATA",username);
+        ui->status->setText("");
         if (user_data.contains("SUCESS")){
             qDebug()<<user_data;
             user_data = user_data.split("**mdsp_split_tag**").at(1);
@@ -292,31 +300,40 @@ void MainWindow::after_login_init(){
                 userdata = StringToJson(user_data);
                 change_to_homepage();
             }
+            ui->AppContainer->setCurrentWidget(ui->AppPage);
         }else{
-            qDebug()<<user_data;
             QMessageBox messageBox2;
             messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
             exit(0);
         }
     }
 }
+void MainWindow::app_init(){
 
+}
 
+void MainWindow::login_page_init(){
+
+}
+
+void MainWindow::back_to_login_page(){
+    ui->AppContainer->setCurrentWidget(ui->Login_RegisterPage);
+    ui->LR_status->setText("");
+    login_page_init();
+}
 
 void MainWindow::on_pushButton_5_clicked(){
     //my_page_edit.insert("name","")
+    ui->status->setText("執行使用者暱稱檢查");
     if (ui->setpage_username->text()=="" || ui->setpage_username->text().length()>=16){
-        QMessageBox msgBox;
-        msgBox.setInformativeText("使用者暱稱必須介於1到16個字元之間");
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
+        QMessageBox messageBox;
+        messageBox.warning(0,"錯誤","使用者暱稱必須介於1到16個字元之間");
         return;
     }
+    ui->status->setText("執行自我介紹長度檢查");
     if (ui->setuserpage_description->toPlainText().length()>=16){
-        QMessageBox msgBox;
-        msgBox.setInformativeText("自我介紹必須少於16個字元");
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
+        QMessageBox messageBox;
+        messageBox.warning(0,"錯誤","自我介紹必須少於16個字元");
         return;
     }
     QJsonArray RGBAArray;
@@ -333,7 +350,23 @@ void MainWindow::on_pushButton_5_clicked(){
     my_page_edit.insert("name",ui->setpage_username->text());
     my_page_edit.insert("description",ui->setuserpage_description->toPlainText());
     my_page_edit.insert("display_board_color",RGBAArray);
-    qDebug()<<my_page_edit;
+    ui->status->setText("執行伺服器溝通...");
+    QString recv = connect("set_userdata");
+    if (recv == "SUCESS"){
+        ui->status->setText("");
+        change_to_homepage();
+        return;
+    }
+    if (recv == "ERR.TIMEOUT"){
+        QMessageBox messageBox;
+        messageBox.warning(0,"錯誤","你閒置太久了，請重新登入");
+        back_to_login_page();
+        return;
+    }
+        qDebug()<<recv;
+        QMessageBox messageBox2;
+        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        exit(0);
 }
 
 void MainWindow::on_LR_Trigger_clicked()
@@ -388,7 +421,6 @@ void MainWindow::on_LR_Trigger_clicked()
         }
         QString status = MainWindow::connect("Login");
         if (status=="SUCESS"){
-            ui->LR_status->setText("登入成功!");
             trial_mode = false;
             qDebug()<<usertoken;
             after_login_init();

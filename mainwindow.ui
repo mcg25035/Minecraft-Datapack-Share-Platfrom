@@ -687,12 +687,25 @@ p, li { white-space: pre-wrap; }
        <pixmap resource="Images.qrc">:/image/AD.png</pixmap>
       </property>
      </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>460</y>
+        <width>71</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>程式狀態</string>
+      </property>
+     </widget>
      <widget class="QLabel" name="status">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>470</y>
-        <width>781</width>
+        <x>100</x>
+        <y>460</y>
+        <width>661</width>
         <height>18</height>
        </rect>
       </property>
