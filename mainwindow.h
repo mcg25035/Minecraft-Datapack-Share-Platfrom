@@ -32,6 +32,7 @@ private slots:
     void app_init();
     void login_page_init();
     void back_to_login_page();
+    void on_show_password_clicked();
 
 private:
     Ui::MainWindow *ui;

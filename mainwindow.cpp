@@ -17,6 +17,7 @@
 #include <QCryptographicHash>
 #include <QMessageBox>
 #include <QTime>
+#include <QFile>
 QString os_type = QSysInfo::kernelType();
 QJsonObject my_page_edit;
 QString private_key;
@@ -24,7 +25,7 @@ QString sign_id;
 QString usertoken;
 QString username;
 QJsonObject userdata;
-QString server_url = "https://script.google.com/macros/s/AKfycbxhEj1WjpCyuOXlvSm3XoDnS7jaMhNQ0dSBUru7OCjKpQ4CMypUfuffoTKcc5hDTrpG/exec";
+QString server_url = "https://script.google.com/macros/s/AKfycbwadqi3wR2n0bMplJzHCqJxxlINnGHCiEGxneLngRGEGTGcDF6VywPOyX60rN6mxY6V/exec";
 bool trial_mode= true;
 QString AppDir;
 void MainWindow::test(QString params){
@@ -70,6 +71,8 @@ QString post(QString connect_type,QByteArray connect_arg=QString("").toUtf8()){
 
 
 QString MainWindow::connect(QString connect_type,QString arg=""){
+    ui->LR_username->setEnabled(false);
+    ui->LR_password->setEnabled(false);
     QString publickey = post("get_public");
     qDebug()<<publickey;
     if (publickey.contains("SUCESS")){
@@ -89,7 +92,7 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
     for (int i=1;i<=32;i++){
         id += QString((qrand()%79)+45);
     }
-    QString setseesionkeycheck_databeforesend = "id="+id+"&seesion_key="+encryption.encode(QString(private_key).toUtf8(),QString(publickey).toUtf8(),QString(publickey).toUtf8()).toBase64()+"&seesion_key_check="+QCryptographicHash::hash(publickey.toUtf8(),QCryptographicHash::Sha256).toHex();
+    QString setseesionkeycheck_databeforesend = "id="+id+"&seesion_key="+encryption.encode(QString(private_key).toUtf8(),QString(publickey).toUtf8(),QString(publickey).toUtf8()).toBase64().replace("=","")+"&seesion_key_check="+QCryptographicHash::hash(publickey.toUtf8(),QCryptographicHash::Sha256).toHex();
     QString setseesionkeycheck = post("set_seesion_key",setseesionkeycheck_databeforesend.toUtf8());
     while (setseesionkeycheck=="change_public_key" || setseesionkeycheck=="INFO.IDEXIST"){
         publickey = post("get_public");
@@ -107,29 +110,30 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
             private_key += QString((qrand()%79)+45);
         }
         for (int i=1;i<=32;i++){
-            id += QString((qrand()%79)+45);
+            id += QString((qrand()%79)+45).replace("=","*");
         }
-        QString setseesionkeycheck_databeforesend = "id="+id+"&seesion_key="+encryption.encode(QString(private_key).toUtf8(),QString(publickey).toUtf8(),QString(publickey).toUtf8()).toBase64()+"&seesion_key_check="+QCryptographicHash::hash(publickey.toUtf8(),QCryptographicHash::Sha256).toHex();
+
+        QString setseesionkeycheck_databeforesend = "id="+id+"&seesion_key="+encryption.encode(QString(private_key).toUtf8(),QString(publickey).toUtf8(),QString(publickey).toUtf8()).toBase64().replace("=","")+"&seesion_key_check="+QCryptographicHash::hash(publickey.toUtf8(),QCryptographicHash::Sha256).toHex();
         setseesionkeycheck = post("set_seesion_key",setseesionkeycheck_databeforesend.toUtf8());
     }
     qDebug()<<private_key;
-    if (setseesionkeycheck == "SUCESS"){
+    if (setseesionkeycheck != "SUCESS"){
         QMessageBox messageBox;
         messageBox.critical(0,"錯誤","Minecraft Datapack Share Platfrom 遇到了無法預期的錯誤，程式即將停止");
         exit(0);
     }
+    ui->LR_username->setEnabled(true);
+    ui->LR_password->setEnabled(true);
     if (connect_type == "Register"){
         QString reg_data = QString("{\"username\":\""+ui->LR_username->text()+"\",\"password\":\""+QCryptographicHash::hash(ui->LR_password->text().toUtf8(),QCryptographicHash::Sha256).toHex()+"\"}");
-        encryption.encode(QString(reg_data).toUtf8().toBase64(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
         QByteArray data_before_send = "";
-        data_before_send+="security_data="+encryption.encode(QString(reg_data).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64()+"&id="+id;
+        data_before_send+="security_data="+encryption.encode(QString(reg_data).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","")+"&id="+id;
         return post("register",data_before_send);
     }
     if (connect_type == "Login"){
         QString reg_data = QString("{\"username\":\""+ui->LR_username->text()+"\",\"password\":\""+QCryptographicHash::hash(ui->LR_password->text().toUtf8(),QCryptographicHash::Sha256).toHex()+"\"}");
-        encryption.encode(QString(reg_data).toUtf8().toBase64(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
         QByteArray data_before_send = "";
-        data_before_send+="security_data="+encryption.encode(QString(reg_data).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64()+"&id="+id;
+        data_before_send+="security_data="+encryption.encode(QString(reg_data).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","")+"&id="+id;
         QString data_recv = post("login",data_before_send);
         if (data_recv.contains("SUCESS")){
             qDebug()<<"token";
@@ -146,7 +150,7 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
             QString data_recv = post("get_userdata",data_before_send);
             return data_recv;
         }else{
-            QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
+            QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","");
             QByteArray data_before_send = "";
             data_before_send += "token="+token_before_send+"&username="+username+"&target_username="+arg+"&id="+id;
             QString data_recv = post("get_userdata",data_before_send);
@@ -154,11 +158,25 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
         }
     }
     if (connect_type == "set_userdata"){
-        QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64();
+        QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","");
         QByteArray data_before_send = "";
-        data_before_send += "token="+token_before_send+"&username="+username+"&id="+id+"&userdata="+QJsonDocument(my_page_edit).toJson(QJsonDocument::Compact).toBase64();
+        data_before_send += "token="+token_before_send+"&username="+username+"&id="+id+"&userdata="+QJsonDocument(my_page_edit).toJson(QJsonDocument::Compact).toBase64().replace("=","");
         QString data_recv = post("set_userdata",data_before_send);
         return data_recv;
+    }
+    if (connect_type == "get_recommend"){
+        if (trial_mode){
+            QByteArray data_before_send = "";
+            data_before_send += "&id="+id;
+            QString data_recv = post("recommend_datapack_list",data_before_send);
+            return data_recv;
+        }else{
+            QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","");
+            QByteArray data_before_send = "";
+            data_before_send += "token="+token_before_send+"&username="+username+"&id="+id;
+            QString data_recv = post("recommend_datapack_list",data_before_send);
+            return data_recv;
+        }
     }
     return QString("");
 }
@@ -202,7 +220,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setuserpage_description->setPlaceholderText("簡介欄位\n點擊即可編輯");
     setStyleSheet("QLabel {color: rgb(255,255,255)} QRadioButton {color: rgb(255,255,255)} QPushButton{background-color: rgb(48, 54, 58);color: rgb(255,255,255)}");
     ui->Login->click();
-    QString app_path = qgetenv("HOME")+"/.MCDPSP/";
+    ui->show_password->click();
+    ui->show_password->click();
     ui->Page->setStyleSheet("QStackedWidget{border:0.5px solid;border-color:rgb(68,74,78);background-color:rgb(0,0,0);border-radius:4px}");
     ui->top_container->setStyleSheet("border:0.5px solid;border-color:rgb(68,74,78);border-radius:4px");
     ui->usericon->setStyleSheet("border:0px solid;border-color:rgb(68,74,78);border-radius:25%;background-color:rgb(255,255,255)");
@@ -231,10 +250,10 @@ MainWindow::MainWindow(QWidget *parent)
     else{
         AppDir = QDir::currentPath()+"/.Minecraft_Datapack_Share_Platfrom";
         if (!QDir(AppDir).exists()){
-            QDir::currentPath().mkdir(".Minecraft_Datapack_Share_Platfrom");
+            QDir(QDir::currentPath()).mkdir(".Minecraft_Datapack_Share_Platfrom");
         }
     }
-
+    login_page_init();
     /*
     QPushButton *button[10];
     button[0] = new QPushButton(ui->MainPageDatapacks);
@@ -304,11 +323,13 @@ void MainWindow::on_pushButton_6_clicked(){
     ui->status->setText("");
 }
 void MainWindow::change_to_homepage(){
-
+    ui->Page->setCurrentWidget(ui->home_page);
+    app_init();
 }
 
 void MainWindow::after_login_init(){
     if (trial_mode){
+        ui->AppContainer->setCurrentWidget(ui->AppPage);
         change_to_homepage();
     }else{
         ui->status->setText("執行伺服器溝通...");
@@ -326,6 +347,7 @@ void MainWindow::after_login_init(){
             }
             ui->AppContainer->setCurrentWidget(ui->AppPage);
         }else{
+            qDebug()<<user_data;
             QMessageBox messageBox2;
             messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
             exit(0);
@@ -333,11 +355,33 @@ void MainWindow::after_login_init(){
     }
 }
 void MainWindow::app_init(){
+    QString recv = connect("get_recommend");
+    if (!recv.contains("SUCESS")){
+        QMessageBox messageBox2;
+        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        exit(0);
+    }
+    qDebug()<<recv;
+    recv = recv.split("**mdsp_split_tag**").at(1);
+    QJsonObject datapack_list = StringToJson(recv);
+    QJsonArray datapacks = datapack_list["datapacks"].toArray();
+    qDebug()<<datapacks;
+    qDebug()<<datapacks.size();
+    ui->MainPageDatapacks->setMinimumWidth(datapacks.size()*111);
 
 }
-
+//http://drive.google.com/uc?id=1oYa_o-9BHagDnGT2hma7DZ1rcnM98hEf&export=download
 void MainWindow::login_page_init(){
-
+    if (QFile::exists(AppDir+"/userdata.MDSP")){
+        QFile * user_login_data = new QFile(AppDir+"/userdata.MDSP");
+        user_login_data->open(QFile::ReadWrite);
+        QString user_data_login = user_login_data->readAll();
+        user_login_data->close();
+        if (user_data_login.split(",").length()==2){
+            ui->LR_username->setText(user_data_login.split(",").at(0));
+            ui->LR_password->setText(user_data_login.split(",").at(1));
+        }
+    }
 }
 
 void MainWindow::back_to_login_page(){
@@ -418,7 +462,6 @@ void MainWindow::on_LR_Trigger_clicked()
                 return;
             }
         }
-        ui->LR_status->setText("執行伺服器溝通...");
         QString status = MainWindow::connect("Register");
         if (status=="SUCESS"){
             ui->LR_status->setText("註冊成功!");
@@ -447,6 +490,11 @@ void MainWindow::on_LR_Trigger_clicked()
         if (status=="SUCESS"){
             trial_mode = false;
             qDebug()<<usertoken;
+            QFile * user_login_data = new QFile(AppDir+"/userdata.MDSP");
+            user_login_data->open(QFile::ReadWrite);
+            user_login_data->write(QString(ui->LR_username->text()+","+ui->LR_password->text()).toUtf8());
+            user_login_data->close();
+            ui->LR_status->setText("執行伺服器溝通...");
             after_login_init();
             return;
         }
@@ -459,5 +507,15 @@ void MainWindow::on_LR_Trigger_clicked()
         messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
         exit(0);
 
+    }
+}
+
+void MainWindow::on_show_password_clicked()
+{
+    if (ui->show_password->isChecked()==false){
+        ui->LR_password->setEchoMode(QLineEdit::Password);
+    }
+    if (ui->show_password->isChecked()==true){
+        ui->LR_password->setEchoMode(QLineEdit::Normal);
     }
 }
