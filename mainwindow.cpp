@@ -18,6 +18,8 @@
 #include <QMessageBox>
 #include <QTime>
 #include <QFile>
+#include <qcompressor.h>
+
 QString os_type = QSysInfo::kernelType();
 QJsonObject my_page_edit;
 QString private_key;
@@ -25,7 +27,7 @@ QString sign_id;
 QString usertoken;
 QString username;
 QJsonObject userdata;
-QString server_url = "https://script.google.com/macros/s/AKfycbwadqi3wR2n0bMplJzHCqJxxlINnGHCiEGxneLngRGEGTGcDF6VywPOyX60rN6mxY6V/exec";
+QString server_url = "https://script.google.com/macros/s/AKfycbzJQUmm1ozWqcv18aeBOje_oh6QZHk3uMzkWQR-kShnS8MV73UgHS5IRxSf8mHNn9Zk/exec";
 bool trial_mode= true;
 QString AppDir;
 void MainWindow::test(QString params){
@@ -40,6 +42,80 @@ QJsonObject StringToJson(QString str){
             }
         }
         return obj;
+}
+QJsonObject read_level_dat(QString path){
+    QFile * nbt = new QFile(path);
+    nbt->open(QFile::ReadOnly);
+    QByteArray level_dat_row = nbt->readAll();
+    nbt->close();
+    QByteArray level_dat;
+    QJsonObject return__;
+    if (QCompressor::gzipDecompress(level_dat_row,level_dat)==true){
+        level_dat = QString(level_dat.toHex()).split("0a000756657273696f6e").at(1).toUtf8();
+        QList<QByteArray> Hex_Array;
+        QByteArray current_processing_hex;
+
+        for (int i=1;i<=level_dat.size();i+=2){
+            current_processing_hex = (QString(level_dat.at(i-1))+QString(level_dat.at(i))).toUtf8();
+            Hex_Array.append(current_processing_hex);
+        }
+        int current_pointer=1;
+        for (current_pointer=1;current_pointer<=Hex_Array.length();current_pointer++){
+            if (Hex_Array.at(current_pointer-1).toUInt(0,16) == 1){
+                int name_length = (Hex_Array.at(current_pointer)+Hex_Array.at(current_pointer+1)).toUInt(0,16);
+                int value = 0;
+                current_pointer+=2;
+                QString name;
+                for (int i=1;i<=name_length;i++){
+                    current_pointer+=1;
+                    name += QString(Hex_Array.at(current_pointer-1).toUInt(0,16));
+                }
+                current_pointer+=1;
+                return__.insert(name,value);
+            }
+            else if (Hex_Array.at(current_pointer-1).toUInt(0,16) == 3){
+                int name_length = (Hex_Array.at(current_pointer)+Hex_Array.at(current_pointer+1)).toUInt(0,16);
+                int value = 0;
+                current_pointer+=2;
+                QString name;
+                for (int i=1;i<=name_length;i++){
+                    current_pointer+=1;
+                    name += QString(Hex_Array.at(current_pointer-1).toUInt(0,16));
+                }
+                current_pointer+=4;
+                return__.insert(name,value);
+            }
+            else if (Hex_Array.at(current_pointer-1).toUInt(0,16) == 8){
+                int name_length = (Hex_Array.at(current_pointer)+Hex_Array.at(current_pointer+1)).toUInt(0,16);
+                QString value = "";
+                current_pointer+=2;
+                QString name;
+                for (int i=1;i<=name_length;i++){
+                    current_pointer+=1;
+                    name += QString(Hex_Array.at(current_pointer-1).toUInt(0,16));
+                }
+                int string_length = (Hex_Array.at(current_pointer)+Hex_Array.at(current_pointer+1)).toUInt(0,16);
+                current_pointer+=2;
+                for (int i=1;i<=string_length;i++){
+                    current_pointer+=1;
+                    value += QString(Hex_Array.at(current_pointer-1).toUInt(0,16));
+                }
+                return__.insert(name,value);
+            }
+            else if (Hex_Array.at(current_pointer-1).toUInt(0,16) == 0){
+                break;
+            }
+        }
+        return return__;
+        //qDebug()<<Hex_Array;
+    }
+    else{
+        QMessageBox messageBox;
+        messageBox.critical(0,"錯誤","Minecraft Datapack Share Platfrom 遇到了無法預期的錯誤，程式即將停止");
+        exit(0);
+    }
+    //int pointer_data_start;
+    //int pointer_data_end;
 }
 QString post(QString connect_type,QByteArray connect_arg=QString("").toUtf8()){
     qsrand(QTime::currentTime().msec());
@@ -215,6 +291,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (!QDir(AppDir).exists()){
         QDir().mkdir(AppDir);
     }
+    qDebug()<<read_level_dat("/home/north-bear/.minecraft/saves/menu_test/level.dat");
     ui->setupUi(this);
     ui->user_icon_setting->setStyleSheet("background-color:rgba(0,0,0,0);border-radius:25%;");
     ui->setuserpage_description->setPlaceholderText("簡介欄位\n點擊即可編輯");
@@ -254,27 +331,6 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
     login_page_init();
-    /*
-    QPushButton *button[10];
-    button[0] = new QPushButton(ui->MainPageDatapacks);
-    button[1] = new QPushButton(ui->MainPageDatapacks);
-    button[2] = new QPushButton(ui->MainPageDatapacks);
-    button[3] = new QPushButton(ui->MainPageDatapacks);
-    QSignalMapper * mapper = new QSignalMapper(this);
-    button[0]->move(10,0);
-    button[1]->move(20,0);
-    button[2]->move(30,0);
-    button[3]->move(40,0);
-    connect(button[0],SIGNAL(clicked()), mapper, SLOT(map()));
-    mapper->setMapping(button[0],QString("never gonna give you up"));
-    connect(button[1],SIGNAL(clicked()), mapper, SLOT(map()));
-    mapper->setMapping(button[1],QString("never gonna let you down"));
-    connect(button[2],SIGNAL(clicked()), mapper, SLOT(map()));
-    mapper->setMapping(button[2],QString("never gonna run around"));
-    connect(button[3],SIGNAL(clicked()), mapper, SLOT(map()));
-    mapper->setMapping(button[3],QString("and desert you"));
-    connect(mapper,SIGNAL(mapped(QString)),this,SLOT(test(QString)));
-    */
 }
 
 MainWindow::~MainWindow(){
@@ -367,8 +423,29 @@ void MainWindow::app_init(){
     QJsonArray datapacks = datapack_list["datapacks"].toArray();
     qDebug()<<datapacks;
     qDebug()<<datapacks.size();
-    ui->MainPageDatapacks->setMinimumWidth(datapacks.size()*111);
-
+    ui->MainPageDatapacks->setMinimumWidth(datapacks.size()*101);
+    QWidget * recommend_datapack_list_parent_container;
+    QPushButton * recommend_datapack_list_picture_show_area;
+    QLabel * recommend_datapack_list_datapack_name;
+    QSignalMapper * mapper = new QSignalMapper(this);
+    for (int i=1;i<=datapacks.size();i++){
+        recommend_datapack_list_parent_container = new QWidget(ui->MainPageDatapacks);
+        recommend_datapack_list_parent_container->move(101*(i-1),20);
+        recommend_datapack_list_parent_container->resize(101,80);
+        recommend_datapack_list_picture_show_area = new QPushButton(recommend_datapack_list_parent_container);
+        recommend_datapack_list_picture_show_area->move(20,0);
+        recommend_datapack_list_picture_show_area->resize(61,61);
+        recommend_datapack_list_picture_show_area->setIcon(QIcon(load_image_from_net(datapacks.at(i-1).toObject()["datapack_icon"].toString())));
+        recommend_datapack_list_picture_show_area->setIconSize(QSize(61,61));
+        recommend_datapack_list_datapack_name = new QLabel(recommend_datapack_list_parent_container);
+        recommend_datapack_list_datapack_name->move(0,60);
+        recommend_datapack_list_datapack_name->resize(101,20);
+        recommend_datapack_list_datapack_name->setText(datapacks.at(i-1).toObject()["datapack_name"].toString());
+        recommend_datapack_list_datapack_name->setAlignment(Qt::AlignCenter);
+        QObject::connect(recommend_datapack_list_picture_show_area,SIGNAL(clicked()), mapper, SLOT(map()));
+        mapper->setMapping(recommend_datapack_list_picture_show_area,QString(datapacks.at(i-1).toObject()["datapack_id"].toString()));
+    }
+    QObject::connect(mapper,SIGNAL(mapped(QString)),this,SLOT(test(QString)));
 }
 //http://drive.google.com/uc?id=1oYa_o-9BHagDnGT2hma7DZ1rcnM98hEf&export=download
 void MainWindow::login_page_init(){

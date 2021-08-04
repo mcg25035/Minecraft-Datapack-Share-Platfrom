@@ -3,7 +3,7 @@ QT       += core gui network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
-
+LIBS += -lz
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -18,14 +18,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    qaesencryption.cpp
+    qaesencryption.cpp \
+    qcompressor.cpp
 
 HEADERS += \
     aesni/aesni-enc-cbc.h \
     aesni/aesni-enc-ecb.h \
     aesni/aesni-key-exp.h \
     mainwindow.h \
-    qaesencryption.h
+    qaesencryption.h \
+    qcompressor.h
 
 FORMS += \
     mainwindow.ui
@@ -37,3 +39,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     Images.qrc
+
+DISTFILES += \
+    README

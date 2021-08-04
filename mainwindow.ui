@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="AppPage">
      <widget class="QStackedWidget" name="Page">
@@ -37,7 +37,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="home_page">
        <widget class="QLineEdit" name="lineEdit">
@@ -72,7 +72,7 @@
           <x>10</x>
           <y>60</y>
           <width>711</width>
-          <height>111</height>
+          <height>131</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -87,7 +87,7 @@
            <x>0</x>
            <y>0</y>
            <width>707</width>
-           <height>107</height>
+           <height>127</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -96,149 +96,18 @@
            <height>0</height>
           </size>
          </property>
-         <widget class="QWidget" name="widget" native="true">
+         <widget class="QLabel" name="label_9">
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>111</width>
-            <height>80</height>
+            <width>361</width>
+            <height>18</height>
            </rect>
           </property>
-          <widget class="QLabel" name="label">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>0</y>
-             <width>71</width>
-             <height>61</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_5">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>60</y>
-             <width>58</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </widget>
-         <widget class="QWidget" name="widget_2" native="true">
-          <property name="geometry">
-           <rect>
-            <x>120</x>
-            <y>0</y>
-            <width>111</width>
-            <height>80</height>
-           </rect>
+          <property name="text">
+           <string>為你推薦的資料包，點擊資料包圖示即可前往該資料包頁面</string>
           </property>
-          <widget class="QLabel" name="label_12">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>0</y>
-             <width>71</width>
-             <height>61</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_13">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>60</y>
-             <width>111</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </widget>
-         <widget class="QWidget" name="widget_3" native="true">
-          <property name="geometry">
-           <rect>
-            <x>240</x>
-            <y>0</y>
-            <width>111</width>
-            <height>80</height>
-           </rect>
-          </property>
-          <widget class="QLabel" name="label_16">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>0</y>
-             <width>71</width>
-             <height>61</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_17">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>60</y>
-             <width>111</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </widget>
-         <widget class="QWidget" name="widget_4" native="true">
-          <property name="geometry">
-           <rect>
-            <x>360</x>
-            <y>0</y>
-            <width>5000</width>
-            <height>80</height>
-           </rect>
-          </property>
-          <widget class="QLabel" name="label_24">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>0</y>
-             <width>71</width>
-             <height>61</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_25">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>60</y>
-             <width>111</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
          </widget>
         </widget>
        </widget>
@@ -254,6 +123,45 @@
         <property name="text">
          <string>上架資料包</string>
         </property>
+       </widget>
+       <widget class="QWidget" name="widget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>230</y>
+          <width>101</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>60</y>
+           <width>101</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_8">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>0</y>
+           <width>61</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="set_user_data_page">
@@ -617,6 +525,740 @@ p, li { white-space: pre-wrap; }
        <zorder>pushButton_4</zorder>
        <zorder>pushButton_5</zorder>
        <zorder>pushButton_6</zorder>
+      </widget>
+      <widget class="QWidget" name="page">
+       <widget class="QStackedWidget" name="Page_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>731</width>
+          <height>381</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <widget class="QWidget" name="home_page_2">
+         <widget class="QLineEdit" name="lineEdit_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>661</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="placeholderText">
+           <string>搜尋開發者或是資料包</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton_9">
+          <property name="geometry">
+           <rect>
+            <x>680</x>
+            <y>10</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+         <widget class="QScrollArea" name="scrollArea_3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>60</y>
+            <width>711</width>
+            <height>131</height>
+           </rect>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="MainPageDatapacks_2">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>707</width>
+             <height>127</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <widget class="QLabel" name="label_10">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>361</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>為你推薦的資料包，點擊資料包圖示即可前往該資料包頁面</string>
+            </property>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QPushButton" name="pushButton_10">
+          <property name="geometry">
+           <rect>
+            <x>640</x>
+            <y>340</y>
+            <width>88</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>上架資料包</string>
+          </property>
+         </widget>
+         <widget class="QWidget" name="widget_2" native="true">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>230</y>
+            <width>101</width>
+            <height>80</height>
+           </rect>
+          </property>
+          <widget class="QLabel" name="label_11">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>60</y>
+             <width>101</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButton_11">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>0</y>
+             <width>61</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="set_user_data_page_2">
+         <widget class="QLabel" name="background_setuserpage_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>731</width>
+            <height>381</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="Images.qrc">:/image/Deafault_Background.png</pixmap>
+          </property>
+         </widget>
+         <widget class="QWidget" name="userselfcolorboard_2" native="true">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>231</width>
+            <height>111</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgba(37, 139, 234,130) ; border-radius:25px;</string>
+          </property>
+          <widget class="QLabel" name="user_icon_setting_2">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>30</y>
+             <width>51</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="Images.qrc">:/image/user_icon.png</pixmap>
+           </property>
+          </widget>
+          <widget class="QTextEdit" name="setuserpage_description_2">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>50</y>
+             <width>131</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius:5;background-color:rgba(0,0,0,0);</string>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="placeholderText">
+            <string>因為這裡不支援我換行，我直接寫在程式</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="setpage_username_2">
+           <property name="geometry">
+            <rect>
+             <x>72</x>
+             <y>31</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius:5;background-color:rgba(0,0,0,0);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>點擊編輯使用者名稱</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QScrollArea" name="scrollArea_4">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>150</y>
+            <width>711</width>
+            <height>81</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1000</width>
+             <height>56</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>1000</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QLabel" name="label_28">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>130</y>
+            <width>711</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgb(48,54,58)</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_36">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>130</y>
+            <width>201</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>這位開發者開發的資料包</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_37">
+          <property name="geometry">
+           <rect>
+            <x>280</x>
+            <y>10</y>
+            <width>251</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color:rgb(0,0,0)</string>
+          </property>
+          <property name="text">
+           <string>設定使用者資料板的顏色</string>
+          </property>
+         </widget>
+         <widget class="QSpinBox" name="userdatasetR_2">
+          <property name="geometry">
+           <rect>
+            <x>280</x>
+            <y>50</y>
+            <width>52</width>
+            <height>32</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>37</number>
+          </property>
+         </widget>
+         <widget class="QSpinBox" name="userdatasetG_2">
+          <property name="geometry">
+           <rect>
+            <x>330</x>
+            <y>50</y>
+            <width>52</width>
+            <height>32</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>139</number>
+          </property>
+         </widget>
+         <widget class="QSpinBox" name="userdatasetB_2">
+          <property name="geometry">
+           <rect>
+            <x>380</x>
+            <y>50</y>
+            <width>52</width>
+            <height>32</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>234</number>
+          </property>
+         </widget>
+         <widget class="QSpinBox" name="userdatasetA_2">
+          <property name="geometry">
+           <rect>
+            <x>430</x>
+            <y>50</y>
+            <width>52</width>
+            <height>32</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>130</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_38">
+          <property name="geometry">
+           <rect>
+            <x>290</x>
+            <y>30</y>
+            <width>41</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color:rgb(0,0,0)</string>
+          </property>
+          <property name="text">
+           <string>R(紅)</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_39">
+          <property name="geometry">
+           <rect>
+            <x>340</x>
+            <y>30</y>
+            <width>41</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color:rgb(0,0,0)</string>
+          </property>
+          <property name="text">
+           <string>G(綠)</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_40">
+          <property name="geometry">
+           <rect>
+            <x>390</x>
+            <y>30</y>
+            <width>41</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color:rgb(0,0,0)</string>
+          </property>
+          <property name="text">
+           <string>B(藍)</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_41">
+          <property name="geometry">
+           <rect>
+            <x>430</x>
+            <y>30</y>
+            <width>151</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color:rgb(0,0,0)</string>
+          </property>
+          <property name="text">
+           <string>A(透明度)</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton_12">
+          <property name="geometry">
+           <rect>
+            <x>640</x>
+            <y>340</y>
+            <width>88</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>更改背景圖片</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton_13">
+          <property name="geometry">
+           <rect>
+            <x>440</x>
+            <y>340</y>
+            <width>88</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>完成設定</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton_14">
+          <property name="geometry">
+           <rect>
+            <x>540</x>
+            <y>340</y>
+            <width>91</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>更變頭像</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="page_2">
+         <widget class="QLabel" name="label_12">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>731</width>
+            <height>381</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_14">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>731</width>
+            <height>381</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="Images.qrc">:/image/Deafault_Background.png</pixmap>
+          </property>
+         </widget>
+         <widget class="QWidget" name="datapackselfcolorboard" native="true">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>481</width>
+            <height>181</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgba(37, 139, 234,130) ; border-radius:25px;</string>
+          </property>
+          <widget class="QLabel" name="data_icon_setting">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>30</y>
+             <width>51</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="Images.qrc">:/image/user_icon.png</pixmap>
+           </property>
+          </widget>
+          <widget class="QTextEdit" name="setdatapackpage_description">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>80</y>
+             <width>391</width>
+             <height>81</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius:5;background-color:rgba(0,0,0,0);</string>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="placeholderText">
+            <string>資料包敘述</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="datapack_name_set">
+           <property name="geometry">
+            <rect>
+             <x>72</x>
+             <y>31</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius:5;background-color:rgba(0,0,0,0);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>點擊編輯資料包名稱</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="comboBox">
+           <property name="geometry">
+            <rect>
+             <x>280</x>
+             <y>50</y>
+             <width>71</width>
+             <height>32</height>
+            </rect>
+           </property>
+           <item>
+            <property name="text">
+             <string>1.13</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.14</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.15</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.16</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.17</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QComboBox" name="comboBox_2">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>50</y>
+             <width>71</width>
+             <height>32</height>
+            </rect>
+           </property>
+           <item>
+            <property name="text">
+             <string>1.13</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.14</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.15</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.16</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.17</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QLabel" name="label">
+           <property name="geometry">
+            <rect>
+             <x>250</x>
+             <y>50</y>
+             <width>31</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb()</string>
+           </property>
+           <property name="text">
+            <string>～</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_13">
+           <property name="geometry">
+            <rect>
+             <x>80</x>
+             <y>50</y>
+             <width>101</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb()</string>
+           </property>
+           <property name="text">
+            <string>設定支援版本</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="edit_datapack_icon">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>80</y>
+             <width>51</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>編輯</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QPushButton" name="edit_datapack_background">
+          <property name="geometry">
+           <rect>
+            <x>640</x>
+            <y>340</y>
+            <width>88</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>更改背景圖片</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton_15">
+          <property name="geometry">
+           <rect>
+            <x>540</x>
+            <y>340</y>
+            <width>88</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>完成設定</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="top_container" native="true">
