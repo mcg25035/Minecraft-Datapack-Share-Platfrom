@@ -30,6 +30,10 @@ QJsonObject userdata;
 QString server_url = "https://script.google.com/macros/s/AKfycbzJQUmm1ozWqcv18aeBOje_oh6QZHk3uMzkWQR-kShnS8MV73UgHS5IRxSf8mHNn9Zk/exec";
 bool trial_mode= true;
 QString AppDir;
+int datapack_edit_page_max=1;
+int datapack_edit_page_current=1;
+int datapack_view_page_max=1;
+int datapack_view_page_current=1;
 void MainWindow::test(QString params){
     qDebug()<<params;
 }
@@ -595,4 +599,63 @@ void MainWindow::on_show_password_clicked()
     if (ui->show_password->isChecked()==true){
         ui->LR_password->setEchoMode(QLineEdit::Normal);
     }
+}
+
+void MainWindow::on_datapackdatasetR_valueChanged(int arg1)
+{
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+}
+
+void MainWindow::on_datapackdatasetG_valueChanged(int arg1)
+{
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+}
+
+void MainWindow::on_datapackdatasetB_valueChanged(int arg1)
+{
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+}
+
+void MainWindow::on_datapackdatasetA_valueChanged(int arg1)
+{
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+}
+
+void MainWindow::datapack_set_change_image(){
+    ui->datapack_set_picture_index->setText("第 "+QString::number(datapack_edit_page_current)+" / "+QString::number(datapack_edit_page_max)+" 張");
+}
+void MainWindow::datapack_view_change_image(){
+    ui->datapack_view_picture_index->setText("第 "+QString::number(datapack_view_page_current)+" / "+QString::number(datapack_view_page_max)+" 張");
+}
+void MainWindow::on_pushButton_8_clicked()
+{
+    if (datapack_edit_page_current-1>0){
+        datapack_edit_page_current-=1;
+    }
+    datapack_set_change_image();
+}
+
+
+void MainWindow::on_pushButton_16_clicked()
+{
+    if (datapack_edit_page_current+1<=datapack_edit_page_max){
+        datapack_edit_page_current+=1;
+    }
+    datapack_set_change_image();
+}
+
+void MainWindow::on_pushButton_20_clicked()
+{
+    if (datapack_view_page_current-1>0){
+        datapack_view_page_current-=1;
+    }
+    datapack_view_change_image();
+}
+
+void MainWindow::on_pushButton_19_clicked()
+{
+    if (datapack_view_page_current+1<=datapack_view_page_max){
+        datapack_view_page_current+=1;
+    }
+    datapack_view_change_image();
 }

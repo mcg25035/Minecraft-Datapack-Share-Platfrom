@@ -33,6 +33,16 @@ private slots:
     void login_page_init();
     void back_to_login_page();
     void on_show_password_clicked();
+    void on_datapackdatasetR_valueChanged(int arg1);
+    void on_datapackdatasetG_valueChanged(int arg1);
+    void on_datapackdatasetB_valueChanged(int arg1);
+    void on_datapackdatasetA_valueChanged(int arg1);
+    void on_pushButton_8_clicked();
+    void datapack_set_change_image();
+    void datapack_view_change_image();
+    void on_pushButton_16_clicked();
+    void on_pushButton_20_clicked();
+    void on_pushButton_19_clicked();
 
 private:
     Ui::MainWindow *ui;
