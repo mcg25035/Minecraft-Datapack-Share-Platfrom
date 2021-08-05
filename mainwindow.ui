@@ -479,6 +479,21 @@ p, li { white-space: pre-wrap; }
          <string>更變頭像</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_18">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>260</y>
+          <width>241</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>上傳圖片之後請確保在24小時內完成設定
+超時就再按按鈕上傳一次
+否則上傳的圖片將會被移除</string>
+        </property>
+       </widget>
        <zorder>background_setuserpage</zorder>
        <zorder>userselfcolorboard</zorder>
        <zorder>label_27</zorder>
@@ -496,6 +511,7 @@ p, li { white-space: pre-wrap; }
        <zorder>pushButton_4</zorder>
        <zorder>pushButton_5</zorder>
        <zorder>pushButton_6</zorder>
+       <zorder>label_18</zorder>
       </widget>
       <widget class="QWidget" name="page">
        <widget class="QStackedWidget" name="Page_2">
@@ -994,7 +1010,7 @@ p, li { white-space: pre-wrap; }
            <string/>
           </property>
          </widget>
-         <widget class="QLabel" name="label_14">
+         <widget class="QLabel" name="set_datapack_background">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -1022,7 +1038,7 @@ p, li { white-space: pre-wrap; }
           <property name="styleSheet">
            <string notr="true">background-color:rgba(37, 139, 234,130) ; border-radius:25px;</string>
           </property>
-          <widget class="QLabel" name="data_icon_setting">
+          <widget class="QLabel" name="datapack_icon_setting">
            <property name="geometry">
             <rect>
              <x>20</x>
@@ -1414,7 +1430,7 @@ p, li { white-space: pre-wrap; }
            <number>234</number>
           </property>
          </widget>
-         <widget class="QPushButton" name="edit_datapack_background_2">
+         <widget class="QPushButton" name="remove_datapack_background_2">
           <property name="geometry">
            <rect>
             <x>600</x>
@@ -1427,7 +1443,7 @@ p, li { white-space: pre-wrap; }
            <string>刪除目前背景圖片</string>
           </property>
          </widget>
-         <widget class="QLineEdit" name="lineEdit_5">
+         <widget class="QLineEdit" name="datapack_id_setpage">
           <property name="geometry">
            <rect>
             <x>560</x>
@@ -1440,7 +1456,7 @@ p, li { white-space: pre-wrap; }
            <string>datapack id</string>
           </property>
          </widget>
-         <widget class="QComboBox" name="comboBox_4">
+         <widget class="QComboBox" name="pre_set_datapacks_setpage">
           <property name="geometry">
            <rect>
             <x>560</x>
@@ -1761,7 +1777,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_2">

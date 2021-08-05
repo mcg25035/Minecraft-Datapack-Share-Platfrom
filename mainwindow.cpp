@@ -22,6 +22,9 @@
 
 QString os_type = QSysInfo::kernelType();
 QJsonObject my_page_edit;
+QJsonObject datapack_page_edit;
+QJsonArray datapack_page_background;
+QJsonArray pre_set_datapack;
 QString private_key;
 QString sign_id;
 QString usertoken;
@@ -295,7 +298,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (!QDir(AppDir).exists()){
         QDir().mkdir(AppDir);
     }
-    qDebug()<<read_level_dat("/home/north-bear/.minecraft/saves/menu_test/level.dat");
+    //qDebug()<<read_level_dat("/home/north-bear/.minecraft/saves/menu_test/level.dat");
     ui->setupUi(this);
     ui->user_icon_setting->setStyleSheet("background-color:rgba(0,0,0,0);border-radius:25%;");
     ui->setuserpage_description->setPlaceholderText("簡介欄位\n點擊即可編輯");
@@ -364,17 +367,20 @@ void MainWindow::on_userdatasetA_valueChanged(){
 
 void MainWindow::on_pushButton_4_clicked(){
     //QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
-    QString text = QInputDialog::getText(this," ","我們已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在5分鐘內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
+    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
     if (text != ""){
         ui->background_setuserpage->setPixmap(load_image_from_net(text));
+        if (my_page_edit.contains("background")){
+            my_page_edit.remove("background");
+        }
         my_page_edit.insert("background",text);
     }
     ui->status->setText("");
 }
 
 void MainWindow::on_pushButton_6_clicked(){
-    QString text = QInputDialog::getText(this," ","我們已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在5分鐘內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
+    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
     if (text != ""){
         ui->user_icon_setting->setPixmap(load_image_from_net(text));
@@ -622,7 +628,13 @@ void MainWindow::on_datapackdatasetA_valueChanged(int arg1)
 }
 
 void MainWindow::datapack_set_change_image(){
-    ui->datapack_set_picture_index->setText("第 "+QString::number(datapack_edit_page_current)+" / "+QString::number(datapack_edit_page_max)+" 張");
+    if (datapack_page_background.size()==0){
+        ui->datapack_set_picture_index->setText("目前是預設圖片，沒有任何自定義圖片");
+    }else{
+        ui->datapack_set_picture_index->setText("第 "+QString::number(datapack_edit_page_current)+" / "+QString::number(datapack_page_background.size())+" 張");
+        ui->set_datapack_background->setPixmap(load_image_from_net(datapack_page_background.at(datapack_edit_page_current).toString()));
+    }
+
 }
 void MainWindow::datapack_view_change_image(){
     ui->datapack_view_picture_index->setText("第 "+QString::number(datapack_view_page_current)+" / "+QString::number(datapack_view_page_max)+" 張");
@@ -658,4 +670,51 @@ void MainWindow::on_pushButton_19_clicked()
         datapack_view_page_current+=1;
     }
     datapack_view_change_image();
+}
+
+void MainWindow::on_edit_datapack_background_clicked()
+{
+    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於伺服器的圖檔會被移除",QLineEdit::Normal);
+    ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
+    if (text != ""){
+        datapack_page_background.append(text);
+    }
+    ui->status->setText("");
+    datapack_set_change_image();
+}
+
+void MainWindow::on_edit_datapack_icon_clicked()
+{
+    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
+    ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
+    if (text != ""){
+        ui->datapack_icon_setting->setPixmap(load_image_from_net(text));
+        if (datapack_page_edit.contains("icon")){
+            datapack_page_edit.remove("icon");
+        }
+        my_page_edit.insert("icon",text);
+    }
+    ui->status->setText("");
+}
+
+void MainWindow::on_remove_datapack_background_2_clicked()
+{
+    datapack_page_background.removeAt(datapack_edit_page_current-1);
+    datapack_edit_page_current-=1;
+    datapack_set_change_image();
+}
+
+void MainWindow::on_pushButton_21_clicked()
+{
+    pre_set_datapack.append(ui->datapack_id_setpage->text());
+    ui->pre_set_datapacks_setpage->addItem(ui->datapack_id_setpage->text());
+}
+
+void MainWindow::on_pushButton_22_clicked()
+{
+    if (pre_set_datapack.size()>0){
+        pre_set_datapack.removeAt(ui->pre_set_datapacks_setpage->currentIndex());
+        ui->pre_set_datapacks_setpage->removeItem(ui->pre_set_datapacks_setpage->currentIndex());
+    }
+    qDebug()<<pre_set_datapack;
 }
