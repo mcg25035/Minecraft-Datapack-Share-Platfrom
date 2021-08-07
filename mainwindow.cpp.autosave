@@ -801,6 +801,12 @@ void MainWindow::on_pushButton_15_clicked()
             ui->status->setText("");
             return;
         }
+        else
+        {
+            QMessageBox messageBox;
+            messageBox.warning(0,"錯誤","資料包名稱和資料包敘述都各需介於5~15000個字元之間");
+            return;
+        }
     }
 }
 

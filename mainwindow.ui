@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="AppPage">
      <widget class="QStackedWidget" name="Page">
@@ -37,7 +37,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="home_page">
        <widget class="QLineEdit" name="lineEdit">
@@ -70,9 +70,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>60</y>
+          <y>70</y>
           <width>711</width>
-          <height>131</height>
+          <height>121</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -86,29 +86,16 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>707</width>
-           <height>127</height>
+           <width>5000</width>
+           <height>96</height>
           </rect>
          </property>
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>5000</width>
            <height>0</height>
           </size>
          </property>
-         <widget class="QLabel" name="label_9">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>361</width>
-            <height>18</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>為你推薦的資料包，點擊資料包圖示即可前往該資料包頁面</string>
-          </property>
-         </widget>
         </widget>
        </widget>
        <widget class="QPushButton" name="pushButton_7">
@@ -132,6 +119,19 @@
           <width>101</width>
           <height>80</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>361</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>為你推薦的資料包，點擊資料包圖示即可前往該資料包頁面</string>
         </property>
        </widget>
       </widget>
@@ -1054,7 +1054,7 @@ p, li { white-space: pre-wrap; }
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="Images.qrc">:/image/user_icon.png</pixmap>
+            <pixmap resource="Images.qrc">:/image/datapackicon.png</pixmap>
            </property>
           </widget>
           <widget class="QTextEdit" name="setdatapackpage_description">
@@ -1099,7 +1099,7 @@ p, li { white-space: pre-wrap; }
             <string>點擊編輯資料包名稱</string>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QComboBox" name="support_version2">
            <property name="geometry">
             <rect>
              <x>280</x>
@@ -1107,6 +1107,9 @@ p, li { white-space: pre-wrap; }
              <width>71</width>
              <height>32</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <item>
             <property name="text">
@@ -1134,7 +1137,7 @@ p, li { white-space: pre-wrap; }
             </property>
            </item>
           </widget>
-          <widget class="QComboBox" name="comboBox_2">
+          <widget class="QComboBox" name="support_version1">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -1142,6 +1145,9 @@ p, li { white-space: pre-wrap; }
              <width>71</width>
              <height>32</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <item>
             <property name="text">
@@ -1261,6 +1267,9 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
          <widget class="QPushButton" name="pushButton_8">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="geometry">
            <rect>
             <x>280</x>
