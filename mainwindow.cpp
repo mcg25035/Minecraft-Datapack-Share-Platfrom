@@ -38,10 +38,53 @@ QString server_url = "https://script.google.com/macros/s/AKfycbwAkmnKKe7VJ9pek_y
 bool trial_mode= true;
 QString AppDir;
 QString McDir;
+QList <QPixmap> thread_return_pixmap;
 int datapack_edit_page_max=0;
 int datapack_edit_page_current=0;
 int datapack_view_page_max=0;
 int datapack_view_page_current=0;
+
+QPixmap load_image_from_net(QString fileid){
+    QEventLoop eventLoop;
+    QNetworkAccessManager mgr;
+
+    QObject::connect(&mgr,SIGNAL(finished(QNetworkReply*)),&eventLoop,SLOT(quit()));
+    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec?fileid="+fileid);
+    QNetworkRequest req(url);
+    QNetworkReply * reply = mgr.get(req);
+    eventLoop.exec();
+    if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()!=302){
+        qDebug()<<reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        thread_return_pixmap.append(QPixmap(":/image/no_image.png"));
+        return QPixmap(":/image/no_image.png");
+    }else{
+        QEventLoop eventLoop1;
+        QNetworkAccessManager mgr1;
+
+        QObject::connect(&mgr1,SIGNAL(finished(QNetworkReply*)),&eventLoop1,SLOT(quit()));
+        QNetworkRequest req(reply->header(QNetworkRequest::LocationHeader).toUrl());
+        QNetworkReply * reply1 = mgr1.get(req);
+        eventLoop1.exec();
+        QByteArray image = QByteArray::fromBase64(reply1->readAll());
+        QPixmap return_ = QPixmap();
+        return_.loadFromData(image);
+        thread_return_pixmap.append(return_);
+        return return_;
+    }
+}
+
+QList <QPixmap> batch_get_image(QStringList image_id_list){
+    QList <QThread *> thread_list;
+    thread_return_pixmap.clear();
+    for (int i=0;i<=image_id_list.length()-1;i++){
+        thread_list.append(QThread::create(load_image_from_net,image_id_list.at(i)));
+        thread_list.at(i)->start();
+    }
+    for (int i=0;i<=thread_list.length()-1;i++){
+        thread_list.at(i)->wait();
+    }
+    return thread_return_pixmap;
+}
 
 bool version_detector(QString top,QString floor,QString reference){
     int swap_area = 0;
@@ -339,32 +382,6 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
 }
 
 
-QPixmap load_image_from_net(QString fileid){
-    QEventLoop eventLoop;
-    QNetworkAccessManager mgr;
-
-    QObject::connect(&mgr,SIGNAL(finished(QNetworkReply*)),&eventLoop,SLOT(quit()));
-    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec?fileid="+fileid);
-    QNetworkRequest req(url);
-    QNetworkReply * reply = mgr.get(req);
-    eventLoop.exec();
-    if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()!=302){
-        qDebug()<<reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        return QPixmap(":/image/no_image.png");
-    }else{
-        QEventLoop eventLoop1;
-        QNetworkAccessManager mgr1;
-
-        QObject::connect(&mgr1,SIGNAL(finished(QNetworkReply*)),&eventLoop1,SLOT(quit()));
-        QNetworkRequest req(reply->header(QNetworkRequest::LocationHeader).toUrl());
-        QNetworkReply * reply1 = mgr1.get(req);
-        eventLoop1.exec();
-        QByteArray image = QByteArray::fromBase64(reply1->readAll());
-        QPixmap return_ = QPixmap();
-        return_.loadFromData(image);
-        return return_;
-    }
-}
 int test_thread(QString arg){
     qDebug()<< arg;
     return 0;
@@ -562,6 +579,11 @@ void MainWindow::app_init(){
     QPushButton * recommend_datapack_list_picture_show_area;
     QLabel * recommend_datapack_list_datapack_name;
     QSignalMapper * mapper = new QSignalMapper(this);
+    QStringList pixmap_list;
+    for (int i=1;i<=datapacks.size();i++){
+        pixmap_list.append(datapacks.at(i-1).toObject().value("datapack_icon").toString());
+    }
+    QList <QPixmap> images = batch_get_image(pixmap_list);
     for (int i=1;i<=datapacks.size();i++){
         recommend_datapack_list_parent_container = new QWidget(ui->MainPageDatapacks);
         recommend_datapack_list_parent_container->move(101*(i-1),20);
@@ -569,7 +591,7 @@ void MainWindow::app_init(){
         recommend_datapack_list_picture_show_area = new QPushButton(recommend_datapack_list_parent_container);
         recommend_datapack_list_picture_show_area->move(20,0);
         recommend_datapack_list_picture_show_area->resize(61,61);
-        recommend_datapack_list_picture_show_area->setIcon(QIcon(load_image_from_net(datapacks.at(i-1).toObject()["datapack_icon"].toString())));
+        recommend_datapack_list_picture_show_area->setIcon(QIcon(images.at(i)));
         recommend_datapack_list_picture_show_area->setIconSize(QSize(61,61));
         recommend_datapack_list_datapack_name = new QLabel(recommend_datapack_list_parent_container);
         recommend_datapack_list_datapack_name->move(0,60);
@@ -659,6 +681,7 @@ void MainWindow::open_datapack_page(QString datapack_id){
         datapack_view_page_data = StringToJson(recv.split("**mdsp_split_tag**").at(1));
         ui->datapack_view_id->setText(datapack_id);
         ui->datapack_view_id->setText(datapack_view_page_data.value("datapack_id").toString());
+
     }else{
         QMessageBox messageBox2;
         messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
