@@ -19,26 +19,55 @@
 #include <QTime>
 #include <QFile>
 #include <qcompressor.h>
-
+#include <QThread>
+QString test_;
+QString test_2;
 QString os_type = QSysInfo::kernelType();
 QJsonObject my_page_edit;
+QJsonObject datapack_view_page_data;
 QJsonObject datapack_page_edit;
 QJsonArray datapack_page_background;
 QJsonArray pre_set_datapack;
+QJsonArray world_list;
 QString private_key;
 QString sign_id;
 QString usertoken;
 QString username;
 QJsonObject userdata;
-QString server_url = "https://script.google.com/macros/s/AKfycbz2Qj7nAEYuzxk5Z46fPnvK0hugh1Iq3mMkF7ki68SaETC6abXk2WWHuUVwNQYVVk7e/exec";
+QString server_url = "https://script.google.com/macros/s/AKfycbwAkmnKKe7VJ9pek_yxql8156n9stLYV0fYJ9Id6aHbQu08M-Q1M499HyU9rynlnDOx/exec";
 bool trial_mode= true;
 QString AppDir;
+QString McDir;
 int datapack_edit_page_max=0;
 int datapack_edit_page_current=0;
 int datapack_view_page_max=0;
 int datapack_view_page_current=0;
+
+bool version_detector(QString top,QString floor,QString reference){
+    int swap_area = 0;
+    int top_ = top.split(".").at(1).toInt();
+    int floor_ = floor.split(".").at(1).toInt();
+    int reference_ = reference.split(".").at(1).toInt();
+    if (top_>floor_){
+        bool a = reference_>=floor_;
+        bool b = top_>=reference_;
+        return a&&b;
+    }
+    else if (top_<floor_){
+        swap_area = top_;
+        top_ = floor_;
+        floor_ = swap_area;
+        bool a = reference_>=floor_;
+        bool b = top_>=reference_;
+        return a&&b;
+    }
+    else if (top_==floor_){
+        return top_==reference_;
+    }
+
+}
 void MainWindow::test(QString params){
-    qDebug()<<params;
+    open_datapack_page(params);
 }
 QJsonObject StringToJson(QString str){
         QJsonObject obj;
@@ -124,6 +153,21 @@ QJsonObject read_level_dat(QString path){
     //int pointer_data_start;
     //int pointer_data_end;
 }
+
+void detect_maps(){
+    QStringList world_list_row = QDir(McDir).entryList();
+    world_list_row.removeAll(".");
+    world_list_row.removeAll("..");
+    for (int i=0;i<=world_list_row.length()-1;i++){
+        if (QFile(world_list_row.at(i)+"/level.dat").exists()){
+            QJsonObject map;
+            map.insert("Name",world_list_row.at(i));
+            map.insert("Version",read_level_dat(world_list_row.at(i)+"/level.dat").value("Name").toString());
+            world_list.append(map);
+        }
+    }
+}
+
 QString post(QString connect_type,QByteArray connect_arg=QString("").toUtf8()){
     qsrand(QTime::currentTime().msec());
     qDebug()<<connect_arg;
@@ -168,12 +212,23 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
     }
     QString private_key;
     QString id;
+    QString generate_char;
     QAESEncryption encryption(QAESEncryption::AES_128,QAESEncryption::CBC,QAESEncryption::Padding::PKCS7);
     for (int i=1;i<=16;i++){
-        private_key += QString((qrand()%79)+45);
+        generate_char = QString((qrand()%79)+45);
+        if (QString("0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_").contains(generate_char)){
+            private_key+=generate_char;
+        }else{
+            private_key+="_";
+        }
     }
     for (int i=1;i<=32;i++){
-        id += QString((qrand()%79)+45);
+        generate_char = QString((qrand()%79)+45);
+        if (QString("0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_").contains(generate_char)){
+            id+=generate_char;
+        }else{
+            id+="_";
+        }
     }
     QString setseesionkeycheck_databeforesend = "id="+id+"&seesion_key="+encryption.encode(QString(private_key).toUtf8(),QString(publickey).toUtf8(),QString(publickey).toUtf8()).toBase64().replace("=","")+"&seesion_key_check="+QCryptographicHash::hash(publickey.toUtf8(),QCryptographicHash::Sha256).toHex();
     QString setseesionkeycheck = post("set_seesion_key",setseesionkeycheck_databeforesend.toUtf8());
@@ -268,6 +323,18 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
         QString data_recv = post("upload_datapack",data_before_send);
         return data_recv;
     }
+    if (connect_type == "get_datapack"){
+        QByteArray data_before_send = "";
+        if (trial_mode){
+            QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","");
+            data_before_send += "id="+id+"&datapack_id="+arg;
+        }else{
+            QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","");
+            data_before_send += "token="+token_before_send+"&username="+username+"&id="+id+"&datapack_id="+arg;
+        }
+        QString data_recv = post("get_datapack",data_before_send);
+        return data_recv;
+    }
     return QString("");
 }
 
@@ -277,7 +344,7 @@ QPixmap load_image_from_net(QString fileid){
     QNetworkAccessManager mgr;
 
     QObject::connect(&mgr,SIGNAL(finished(QNetworkReply*)),&eventLoop,SLOT(quit()));
-    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbxdvqBZcHBO2ewo7iKFhgPDZKegng3haXMQHQiT_628PogjsPTRESwvQNDkU3qNC5kb/exec?fileid="+fileid);
+    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec?fileid="+fileid);
     QNetworkRequest req(url);
     QNetworkReply * reply = mgr.get(req);
     eventLoop.exec();
@@ -298,6 +365,11 @@ QPixmap load_image_from_net(QString fileid){
         return return_;
     }
 }
+int test_thread(QString arg){
+    qDebug()<< arg;
+    return 0;
+}
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -306,6 +378,21 @@ MainWindow::MainWindow(QWidget *parent)
     if (!QDir(AppDir).exists()){
         QDir().mkdir(AppDir);
     }
+    /*
+    QList <QThread *> aaa;
+    aaa.append(QThread::create(test_thread,QString("Never gonna give you up")));
+    aaa.append(QThread::create(test_thread,QString("Never gonna let you down")));
+    aaa.append(QThread::create(test_thread,QString("Never gonna run around")));
+    aaa.append(QThread::create(test_thread,QString("And Desert You")));
+    aaa.at(0)->start();
+    aaa.at(1)->start();
+    aaa.at(2)->start();
+    aaa.at(0)->wait();
+    aaa.at(1)->wait();
+    aaa.at(2)->wait();
+    exit(0);
+    */
+
     //qDebug()<<read_level_dat("/home/north-bear/.minecraft/saves/menu_test/level.dat");
     ui->setupUi(this);
     ui->user_icon_setting->setStyleSheet("background-color:rgba(0,0,0,0);border-radius:25%;");
@@ -327,18 +414,21 @@ MainWindow::MainWindow(QWidget *parent)
         AppDir = qgetenv("APPDATA")+"/.Minecraft_Datapack_Share_Platfrom";
         if (!QDir(AppDir).exists()){
             QDir(qgetenv("APPDATA")).mkdir(".Minecraft_Datapack_Share_Platfrom");
+            QString McDir = qgetenv("APPDATA");
         }
     }
     else if (os_type=="linux"){
         AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
         if (!QDir(AppDir).exists()){
             QDir(qgetenv("HOME")).mkdir(".Minecraft_Datapack_Share_Platfrom");
+            QString McDir = qgetenv("HOME");
         }
     }
     else if (os_type=="darwin"){
         AppDir = qgetenv("HOME")+"/.Minecraft_Datapack_Share_Platfrom";
         if (!QDir(AppDir).exists()){
             QDir(qgetenv("HOME")).mkdir(".Minecraft_Datapack_Share_Platfrom");
+            QString McDir = qgetenv("HOME");
         }
     }
     else{
@@ -376,7 +466,7 @@ void MainWindow::on_userdatasetA_valueChanged(){
 }
 
 void MainWindow::on_pushButton_4_clicked(){
-    //QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec"));
     QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
     if (text != ""){
@@ -390,6 +480,7 @@ void MainWindow::on_pushButton_4_clicked(){
 }
 
 void MainWindow::on_pushButton_6_clicked(){
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec"));
     QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
     if (text != ""){
@@ -405,25 +496,26 @@ void MainWindow::change_to_homepage(){
 
 void MainWindow::after_login_init(){
     if (trial_mode){
-        ui->AppContainer->setCurrentWidget(ui->AppPage);
         change_to_homepage();
     }else{
         ui->status->setText("執行伺服器溝通...");
-        QString user_data = connect("GET_USR_DATA",username);
+        QString user_data_ = connect("GET_USR_DATA",username);
         ui->status->setText("");
-        if (user_data.contains("SUCESS")){
-            qDebug()<<user_data;
-            user_data = user_data.split("**mdsp_split_tag**").at(1);
-            qDebug()<<user_data;
-            if (user_data==""){
+        if (user_data_.contains("SUCESS")){
+            qDebug()<<user_data_;
+            user_data_ = user_data_.split("**mdsp_split_tag**").at(1);
+            qDebug()<<user_data_;
+            if (user_data_==""){
                 ui->Page->setCurrentWidget(ui->set_user_data_page);
             }else{
-                userdata = StringToJson(user_data);
+                userdata = StringToJson(user_data_);
+                ui->main_username->setText(userdata.value("name").toString());
+                ui->usericon->setPixmap(load_image_from_net(userdata.value("usericon").toString()).scaled(51,51));
                 change_to_homepage();
             }
             ui->AppContainer->setCurrentWidget(ui->AppPage);
         }else{
-            qDebug()<<user_data;
+            qDebug()<<user_data_;
             QMessageBox messageBox2;
             messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
             exit(0);
@@ -431,6 +523,20 @@ void MainWindow::after_login_init(){
     }
 }
 void MainWindow::app_init(){
+    if (QFile(AppDir+"/mcpath.MDSP").exists()){
+        QFile * MCPATH = new QFile(AppDir+"/mcpath.MDSP");
+        MCPATH->open(QFile::ReadOnly);
+        McDir = MCPATH->readAll();
+        MCPATH->close();
+    }else
+    {
+        if (QDir(McDir+"/.minecraft/saves").exists()){
+            McDir += "/.minecraft/saves";
+        }else
+        {
+            //引導設定頁面
+        }
+    }
     while (ui->MainPageDatapacks->children().size()!=0){
         while (ui->MainPageDatapacks->children().at(0)->children().size()!=0){
             delete ui->MainPageDatapacks->children().at(0)->children().at(0);
@@ -468,8 +574,11 @@ void MainWindow::app_init(){
         recommend_datapack_list_datapack_name = new QLabel(recommend_datapack_list_parent_container);
         recommend_datapack_list_datapack_name->move(0,60);
         recommend_datapack_list_datapack_name->resize(101,20);
-        recommend_datapack_list_datapack_name->setText(datapacks.at(i-1).toObject()["datapack_name"].toString());
+        recommend_datapack_list_datapack_name->setText(datapacks.at(i-1).toObject().value("datapack_name").toString());
         recommend_datapack_list_datapack_name->setAlignment(Qt::AlignCenter);
+        recommend_datapack_list_parent_container->show();
+        recommend_datapack_list_picture_show_area->show();
+        recommend_datapack_list_datapack_name->show();
         QObject::connect(recommend_datapack_list_picture_show_area,SIGNAL(clicked()), mapper, SLOT(map()));
         mapper->setMapping(recommend_datapack_list_picture_show_area,QString(datapacks.at(i-1).toObject()["datapack_id"].toString()));
     }
@@ -543,6 +652,19 @@ void MainWindow::on_pushButton_5_clicked(){
         QMessageBox messageBox2;
         messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
         exit(0);
+}
+void MainWindow::open_datapack_page(QString datapack_id){
+    QString recv = MainWindow::connect("get_datapack",datapack_id);
+    if (recv.contains("SUCESS")){
+        datapack_view_page_data = StringToJson(recv.split("**mdsp_split_tag**").at(1));
+        ui->datapack_view_id->setText(datapack_id);
+        ui->datapack_view_id->setText(datapack_view_page_data.value("datapack_id").toString());
+    }else{
+        QMessageBox messageBox2;
+        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        exit(0);
+    }
+
 }
 
 void MainWindow::on_LR_Trigger_clicked()
@@ -630,28 +752,28 @@ void MainWindow::on_show_password_clicked()
 
 void MainWindow::on_datapackdatasetR_valueChanged(int arg1)
 {
-    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:10px;");
 }
-
 void MainWindow::on_datapackdatasetG_valueChanged(int arg1)
 {
-    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:10px;");
 }
 
 void MainWindow::on_datapackdatasetB_valueChanged(int arg1)
 {
-    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:10px;");
 }
 
 void MainWindow::on_datapackdatasetA_valueChanged(int arg1)
 {
-    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:25px;");
+    ui->datapackselfcolorboard->setStyleSheet("background-color:rgba("+QString::number(ui->datapackdatasetR->value())+","+QString::number(ui->datapackdatasetG->value())+","+QString::number(ui->datapackdatasetB->value())+","+QString::number(ui->datapackdatasetA->value())+") ; border-radius:10px;");
 }
 
 void MainWindow::datapack_set_change_image(){
     if (datapack_page_background.size()==0){
         ui->set_datapack_background->setPixmap(QPixmap(":/image/Deafault_Background.png"));
         ui->datapack_set_picture_index->setText("目前是預設圖片，沒有任何自定義圖片");
+        datapack_edit_page_current = 0;
     }else{
         if (datapack_page_background.size()==1){
             datapack_edit_page_current=1;
@@ -707,6 +829,7 @@ void MainWindow::on_pushButton_19_clicked()
 
 void MainWindow::on_edit_datapack_background_clicked()
 {
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec"));
     QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於伺服器的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
     if (text != ""){
@@ -718,10 +841,11 @@ void MainWindow::on_edit_datapack_background_clicked()
 
 void MainWindow::on_edit_datapack_icon_clicked()
 {
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec"));
     QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
     ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
     if (text != ""){
-        ui->datapack_icon_setting->setPixmap(load_image_from_net(text));
+        ui->datapack_icon_setting->setPixmap(load_image_from_net(text).scaled(50,50));
         if (datapack_page_edit.contains("datapack_icon")){
             datapack_page_edit.remove("datapack_icon");
         }
@@ -755,6 +879,7 @@ void MainWindow::on_pushButton_22_clicked()
 
 void MainWindow::on_pushButton_15_clicked()
 {
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyJjq50x47T6jQfDnT5DygJy1h8Ecqh8u_XzL05owVlEDloLWeRgiWuuHqjiG7BU3h1/exec"));
     QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n請上傳資料包後請輸入網站提供的檔案id",QLineEdit::Normal);
     if (text != ""){
         datapack_page_edit.insert(QString("datapack"),text);
