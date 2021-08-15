@@ -7,5 +7,7 @@
         <file>user_icon.png</file>
         <file>no_image.png</file>
         <file>datapackicon.png</file>
+        <file>loading.gif</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

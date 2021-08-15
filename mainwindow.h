@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QThread>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -16,6 +16,7 @@ public:
     ~MainWindow();
 
 private slots:
+    void de_timeout_thread_code();
     void on_pushButton_2_clicked();
     void test(QString params);
     void on_userdatasetR_valueChanged();
@@ -45,12 +46,21 @@ private slots:
     void on_pushButton_19_clicked();
     void on_edit_datapack_background_clicked();
     void on_edit_datapack_icon_clicked();
-    void on_remove_datapack_background_2_clicked();
     void on_pushButton_21_clicked();
     void on_pushButton_22_clicked();
     void on_pushButton_15_clicked();
     void on_pushButton_7_clicked();
     void open_datapack_page(QString datapack_id);
+    void bug_report_type_1(QString crash_at,QString crash_recv);
+    void on_Page_currentChanged(int arg1);
+    void on_back_to_home_page_clicked();
+    void on_remove_datapack_background_clicked();
+
+    void on_goto_home_clicked();
+
+    void on_install_datapack_clicked();
+
+    void on_map_list_currentTextChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
