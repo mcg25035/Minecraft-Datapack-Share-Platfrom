@@ -38,12 +38,13 @@ QString sign_id;
 QString usertoken;
 QString username;
 QJsonObject userdata;
-QString server_url = "https://script.google.com/macros/s/AKfycbxvk8jkuMXi1vAeNjknF-pWnQxk8hpGz7M5vM8CG1gytgoPBggICENmCeN9W_6xubG6/exec";
+QString server_url = "https://script.google.com/macros/s/AKfycbwFAQVrOT8VYZTGc3IvZAxjyIKDvdov-qDJHdYE3Nfty5s9LrcqGlD-Vtk7CWW19xWI/exec";
 bool trial_mode= true;
 bool login_on = false;
 QString AppDir;
 QString McDir;
 QList <QPixmap> thread_return_pixmap;
+QList <QByteArray> thread_return_files;
 int datapack_edit_page_max=0;
 int datapack_edit_page_current=0;
 int datapack_view_page_max=0;
@@ -61,7 +62,7 @@ QJsonObject StringToJson(QString str){
         return obj;
 }
 
-QByteArray load_bytearray_from_net(QString fileid){
+QByteArray load_bytearray_from_net(QString fileid,int index){
     QEventLoop eventLoop;
     QNetworkAccessManager mgr;
 
@@ -72,6 +73,8 @@ QByteArray load_bytearray_from_net(QString fileid){
     eventLoop.exec();
     if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()!=302){
         qDebug()<<reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        thread_return_files.removeAt(index);
+        thread_return_files.insert(index,QString("error").toUtf8());
         return QString("error").toUtf8();
     }else{
         QEventLoop eventLoop1;
@@ -81,6 +84,8 @@ QByteArray load_bytearray_from_net(QString fileid){
         QNetworkReply * reply1 = mgr1.get(req);
         eventLoop1.exec();
         QByteArray return_ = QByteArray::fromBase64(reply1->readAll());
+        thread_return_files.removeAt(index);
+        thread_return_files.insert(index,return_);
         return return_;
     }
 }
@@ -130,6 +135,20 @@ QList <QPixmap> batch_get_image(QStringList image_id_list){
     return thread_return_pixmap;
 }
 
+QList <QByteArray> batch_get_files(QStringList fileidlist){
+    QList <QThread *> thread_list;
+    thread_return_files.clear();
+    for (int i=0;i<=fileidlist.length()-1;i++){
+        thread_return_files.append("");
+        thread_list.append(QThread::create(load_bytearray_from_net,fileidlist.at(i),i));
+        thread_list.at(i)->start();
+    }
+    for (int i=0;i<=thread_list.length()-1;i++){
+        thread_list.at(i)->wait();
+    }
+    return thread_return_files;
+}
+
 QStringList init_map_MSDP_read(QString map_name){
     QFile* if_map_exist = new QFile(McDir+"/"+map_name+"/level.dat");
     if (!if_map_exist->exists()){
@@ -141,6 +160,7 @@ QStringList init_map_MSDP_read(QString map_name){
     if (!map_information->exists()){
         map_information->open(QFile::WriteOnly);
         map_information->write(QString("{\"datapacks\":[]}").toUtf8());
+        map_information->resize(map_information->pos());
         map_information->close();
         return QStringList();
     }
@@ -473,6 +493,17 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
         QString data_recv = post("get_datapack",data_before_send);
         return data_recv;
     }
+    if (connect_type == "get_all_preset_datapack"){
+        QByteArray data_before_send = "";
+        if (trial_mode){
+            data_before_send += "id="+id+"&datapackid="+ui->datapack_view_id->text();
+        }else{
+            QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","");
+            data_before_send += "token="+token_before_send+"&username="+username+"&id="+id+"&datapackid="+ui->datapack_view_id->text();
+        }
+        QString data_recv = post("get_all_preset_datapack",data_before_send);
+        return data_recv;
+    }
     return QString("");
 }
 
@@ -508,9 +539,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     //qDebug()<<read_level_dat("/home/north-bear/.minecraft/saves/menu_test/level.dat");
     ui->setupUi(this);
-    ui->map_list->addItem("awegwe");
-    ui->map_list->addItem("serhesr");
-    ui->map_list->addItem("aegaha");
     QMovie* loading = new QMovie(":/image/loading.gif");
     ui->loading->setMovie(loading);
 
@@ -734,7 +762,7 @@ void MainWindow::app_init(){
 void MainWindow::login_page_init(){
     if (QFile::exists(AppDir+"/userdata.MDSP")){
         QFile * user_login_data = new QFile(AppDir+"/userdata.MDSP");
-        user_login_data->open(QFile::ReadWrite);
+        user_login_data->open(QFile::ReadOnly);
         QString user_data_login = user_login_data->readAll();
         user_login_data->close();
         if (user_data_login.split(",").length()==2){
@@ -793,6 +821,8 @@ void MainWindow::on_pushButton_5_clicked(){
     }
 }
 void MainWindow::open_datapack_page(QString datapack_id){
+    ui->install_datapack->setEnabled(true);
+    ui->install_datapack->setText("安裝");
     ui->Page->setCurrentWidget(ui->loading_page);
     QString recv = MainWindow::connect("get_datapack",datapack_id);
     if (recv.contains("SUCESS")){
@@ -892,8 +922,9 @@ void MainWindow::on_LR_Trigger_clicked()
             trial_mode = false;
             qDebug()<<usertoken;
             QFile * user_login_data = new QFile(AppDir+"/userdata.MDSP");
-            user_login_data->open(QFile::ReadWrite);
+            user_login_data->open(QFile::WriteOnly);
             user_login_data->write(QString(ui->LR_username->text()+","+ui->LR_password->text()).toUtf8());
+            user_login_data->resize(user_login_data->pos());
             user_login_data->close();
             ui->LR_status->setText("執行伺服器溝通...");
             after_login_init();
@@ -1160,10 +1191,67 @@ void MainWindow::on_goto_home_clicked()
 
 void MainWindow::on_install_datapack_clicked()
 {
+    ui->map_list->setEnabled(false);
+    ui->install_datapack->setEnabled(false);
+    ui->back_to_home_page->setEnabled(false);
+    ui->install_datapack->setText("安裝中");
     if (ui->map_list->currentText()!=""){
-        QFile * datapack_file = new QFile(McDir+"/"+ui->map_list->currentText()+"/datapacks/"+ui->datapack_view_id->text()+".zip");
-        datapack_file->write(load_bytearray_from_net(datapack_view_page_data.value(datapack_view_page_data.value("datapack").toString())));
-        datapack_file->close();
+        QString recv = connect("get_all_preset_datapack");
+        qDebug()<<recv;
+        if (recv.contains("SUCESS")){
+            QJsonArray preset_datapack_row = StringToJson(recv.split("**mdsp_split_tag**").at(1)).value("datapack_files").toArray();
+            QStringList preset_datapack;
+            for (int i=0;i<=preset_datapack_row.size()-1;i++){
+                preset_datapack.append(preset_datapack_row.at(i).toString());
+            }
+            QList <QByteArray> file_list = batch_get_files(preset_datapack);
+            if (file_list.contains("error")){
+                ui->install_datapack->setEnabled(true);
+                ui->back_to_home_page->setEnabled(true);
+                ui->install_datapack->setText("安裝");
+                ui->map_list->setEnabled(true);
+                qDebug()<<QString("Error1");
+                return;
+            }
+            QStringList map_list = init_map_MSDP_read(ui->map_list->currentText());
+            for (int i=0;i<=preset_datapack.size()-1;i++){
+                QFile * datapack_file = new QFile(McDir+"/"+ui->map_list->currentText()+"/datapacks/"+preset_datapack.at(i)+".zip");
+                datapack_file->open(QFile::WriteOnly);
+                if (!datapack_file->isOpen()){
+                    datapack_file->close();
+                    ui->install_datapack->setEnabled(true);
+                    ui->back_to_home_page->setEnabled(true);
+                    ui->install_datapack->setText("安裝");
+                    ui->map_list->setEnabled(true);
+                    qDebug()<<QString("Error2");
+                    return;
+                }
+                datapack_file->write(file_list.at(i));
+                datapack_file->resize(datapack_file->pos());
+                datapack_file->close();
+                map_list.append(preset_datapack.at(i));
+            }
+            QFile* map_information = new QFile(McDir+"/"+ui->map_list->currentText()+"/Map_Information.MDSP");
+            QJsonObject write_in_later_json;
+            write_in_later_json.insert("datapacks",QJsonArray::fromStringList(map_list));
+            QJsonDocument write_in_later_json_document(write_in_later_json);
+            qDebug()<<write_in_later_json;
+            map_information->open(QFile::ReadWrite);
+            map_information->write(write_in_later_json_document.toJson(QJsonDocument::Compact));
+            map_information->resize(map_information->pos());
+            map_information->close();
+            ui->install_datapack->setEnabled(false);
+            ui->install_datapack->setText("已安裝");
+            ui->back_to_home_page->setEnabled(true);
+            ui->map_list->setEnabled(true);
+        }
+        else{
+            ui->install_datapack->setEnabled(true);
+            ui->back_to_home_page->setEnabled(true);
+            ui->install_datapack->setText("安裝");
+            ui->map_list->setEnabled(true);
+            return;
+        }
     }
     
 }
@@ -1171,17 +1259,17 @@ void MainWindow::on_install_datapack_clicked()
 void MainWindow::on_map_list_currentTextChanged(const QString &arg1)
 {
     ui->install_datapack->setEnabled(false);
+    ui->map_list->setEnabled(false);
+    ui->install_datapack->setText("檢查中");
     QString selected_map = arg1;
     QStringList map_datapack_installed = init_map_MSDP_read(selected_map);
+    ui->map_list->setEnabled(true);
+    ui->map_list->setEnabled(true);
     if (map_datapack_installed.contains(ui->datapack_view_id->text())){
         ui->install_datapack->setEnabled(false);
         ui->install_datapack->setText("已安裝");
     }
-    else if (map_datapack_installed.length()==0){
-        ui->install_datapack->setEnabled(false);
-        ui->install_datapack->setText("未選擇");
-    }
-    else if (map_datapack_installed.contains("ERR") ||){
+    else if (map_datapack_installed.contains("ERR")){
         ui->install_datapack->setEnabled(false);
         ui->install_datapack->setText("錯誤");
     }
