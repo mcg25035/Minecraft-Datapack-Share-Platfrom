@@ -55,12 +55,12 @@ private slots:
     void on_Page_currentChanged(int arg1);
     void on_back_to_home_page_clicked();
     void on_remove_datapack_background_clicked();
-
     void on_goto_home_clicked();
-
     void on_install_datapack_clicked();
-
     void on_map_list_currentTextChanged(const QString &arg1);
+    void on_pushButton_3_clicked();
+    void search_init();
+    void on_back_to_home_page_2_clicked();
 
 private:
     Ui::MainWindow *ui;

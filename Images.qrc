@@ -8,6 +8,7 @@
         <file>no_image.png</file>
         <file>datapackicon.png</file>
         <file>loading.gif</file>
+        <file>search.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

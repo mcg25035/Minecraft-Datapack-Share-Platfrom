@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="AppPage">
      <widget class="QStackedWidget" name="Page">
@@ -55,10 +55,10 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="home_page">
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="serachbox">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -68,7 +68,7 @@
          </rect>
         </property>
         <property name="placeholderText">
-         <string>搜尋開發者或是資料包</string>
+         <string>搜尋開發者或是資料包 不接受連續兩個空格</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButton_3">
@@ -81,7 +81,17 @@
          </rect>
         </property>
         <property name="text">
-         <string>PushButton</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Images.qrc">
+          <normaloff>:/image/search.png</normaloff>:/image/search.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>41</width>
+          <height>41</height>
+         </size>
         </property>
        </widget>
        <widget class="QScrollArea" name="scrollArea">
@@ -1436,6 +1446,123 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="search_result">
+       <widget class="QScrollArea" name="scrollArea_3">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>40</y>
+          <width>361</width>
+          <height>311</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="search_datapack_result">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>357</width>
+           <height>307</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QPushButton" name="back_to_home_page_2">
+        <property name="geometry">
+         <rect>
+          <x>640</x>
+          <y>350</y>
+          <width>90</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>回到主頁面</string>
+        </property>
+       </widget>
+       <widget class="QScrollArea" name="scrollArea_4">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>40</y>
+          <width>360</width>
+          <height>311</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>356</width>
+           <height>307</height>
+          </rect>
+         </property>
+         <widget class="QLabel" name="label_12">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>90</y>
+            <width>221</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>使用者頁面還沒設計好 
+再等幾天</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>731</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>點擊圖像即可前往該頁面</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>搜尋結果(資料包)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_5">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>20</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>搜尋結果(開發者)</string>
         </property>
        </widget>
       </widget>
