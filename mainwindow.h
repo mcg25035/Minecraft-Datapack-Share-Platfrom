@@ -61,6 +61,14 @@ private slots:
     void on_pushButton_3_clicked();
     void search_init();
     void on_back_to_home_page_2_clicked();
+    void open_user_page(QString userid);
+    void on_to_userpage_clicked();
+    void on_back_to_home_page_3_clicked();
+    void on_pushButton_clicked();
+    void on_setting_button_clicked();
+    void on_pushButton_10_clicked();
+    void on_goto_home_2_clicked();
+    void on_pushButton_9_clicked();
 
 private:
     Ui::MainWindow *ui;
