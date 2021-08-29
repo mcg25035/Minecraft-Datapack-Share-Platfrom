@@ -29,7 +29,9 @@
 #include <QFont>
 #include <QMutex>
 #include <QTimer>
+#include <QFileDialog>
 QString test_;
+QString dir;
 QString test_2;
 QString os_type = QSysInfo::kernelType();
 QJsonObject my_page_edit;
@@ -561,11 +563,16 @@ MainWindow::MainWindow(QWidget *parent)
     //qDebug()<<read_level_dat("/home/north-bear/.minecraft/saves/menu_test/level.dat");
     ui->setupUi(this);
     ui->uisettings->setVisible(false);
+    ui->label_15->setVisible(false);
     QFontDatabase FontDatabase;
     QStringList fonts = FontDatabase.families();
+    qDebug()<<ui->label_38->font().toString().split(",").at(0);
+    qDebug()<<ui->label_38->font().toString().split(",").at(1).toInt();
+    ui->font_size->setValue(ui->label_38->font().toString().split(",").at(1).toInt());
     for (int i=0;i<=fonts.size()-1;i++){
         ui->font->addItem(fonts.at(i));
     }
+    ui->font->setCurrentText(ui->label_38->font().toString().split(",").at(0));
     QMovie* loading = new QMovie(":/image/loading.gif");
     ui->loading->setMovie(loading);
     ui->user_icon_setting->setStyleSheet("background-color:rgba(0,0,0,0);border-radius:25%;");
@@ -620,7 +627,7 @@ MainWindow::~MainWindow(){
 void MainWindow::on_pushButton_2_clicked()
 {
     QFont font = QFont(ui->font->currentText());
-    font.setPixelSize(ui->font_size->value());
+    font.setPointSize(ui->font_size->value());
     QList<QWidget*> widgets = ((QObject*)ui->centralwidget)->findChildren<QWidget*>(QString(),Qt::FindChildrenRecursively);
     for (int i=0;i<=widgets.size()-1;i++){
         widgets.at(i)->setFont(font);
@@ -628,12 +635,21 @@ void MainWindow::on_pushButton_2_clicked()
         qDebug()<<widgets.at(i);
         qDebug()<<font;
     }
-    font.setPixelSize(ui->font_size->value()+6);
+    font.setPointSize(ui->font_size->value()+6);
     ui->Loading1->setFont(font);
-    font.setPixelSize(ui->font_size->value()+5);
+    font.setPointSize(ui->font_size->value()+5);
     ui->Loading1->setFont(font);
     ui->uisettings->setVisible(false);
+    ui->label_15->setVisible(false);
     qApp->processEvents();
+    if (ui->McDir->isEnabled() && dir != ""){
+        McDir = dir+"/saves";
+        QFile * MCPATH = new QFile(AppDir+"/mcpath.MDSP");
+        MCPATH->open(QFile::WriteOnly);
+        MCPATH->write(dir.toUtf8());
+        MCPATH->resize(MCPATH->pos());
+        MCPATH->close();
+    }
 }
 
 void MainWindow::on_userdatasetR_valueChanged(){
@@ -819,18 +835,34 @@ void MainWindow::search_init(){
 }
 
 void MainWindow::app_init(){
+    if (os_type=="darwin"){
+        ui->McDir->setText(McDir+"/minecraft");
+    }else
+    {
+        ui->McDir->setText(McDir+"/.minecraft");
+    }
+    ui->label_40->setEnabled(true);
+    ui->McDir->setEnabled(true);
+    ui->Browse->setEnabled(true);
+    ui->label_14->setVisible(false);
     if (QFile(AppDir+"/mcpath.MDSP").exists()){
         QFile * MCPATH = new QFile(AppDir+"/mcpath.MDSP");
         MCPATH->open(QFile::ReadOnly);
-        McDir = MCPATH->readAll();
+        QString McDirRow = MCPATH->readAll();
+        McDir = McDirRow+"/saves";
+        ui->McDir->setText(McDirRow);
         MCPATH->close();
     }else
     {
         if (QDir(McDir+"/.minecraft/saves").exists()){
             McDir += "/.minecraft/saves";
-        }else if (os_type!="darwin")
-        {
-            //引導設定頁面
+        }
+        else if (QDir(McDir+"/minecraft/saves").exists()){
+            McDir += "/minecraft/saves";
+        }
+        else{
+            ui->label_15->setVisible(true);
+            ui->uisettings->setVisible(true);
         }
     }
     while (ui->MainPageDatapacks->children().size()!=0){
@@ -1546,6 +1578,9 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_setting_button_clicked()
 {
+    if ((ui->Page->currentIndex() == 3) && ui->AppContainer->currentIndex() == 0){
+        change_to_homepage();
+    }
     ui->uisettings->setVisible(true);
 }
 
@@ -1563,4 +1598,81 @@ void MainWindow::on_pushButton_9_clicked()
 {
     ui->goto_home_2->setEnabled(true);
     ui->Page->setCurrentWidget(ui->set_user_data_page);
+}
+
+void MainWindow::on_Browse_clicked()
+{
+    dir = QFileDialog::getExistingDirectory(this, "選擇麥塊資料夾","",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    dir = dir.replace("minecraft/","minecraft").replace("minecraft\\","minecraft");
+    ui->McDir->setText(dir);
+}
+
+void MainWindow::on_pushButton_11_clicked()
+{
+    ui->Page->setCurrentWidget(ui->loading_page);
+    detect_maps();
+    ui->world_list->clear();
+    for (int i=0;i<=world_list.size()-1;i++){
+        ui->world_list->addItem(world_list.at(i).toObject().value("Name").toString());
+    }
+    ui->Page->setCurrentWidget(ui->world_manage_page);
+}
+
+void MainWindow::on_world_list_currentTextChanged(const QString &currentText)
+{
+    ui->datapack_list->setEnabled(true);
+    ui->datapack_list->clear();
+    QStringList datapack_list = init_map_MSDP_read(currentText);
+    if (datapack_list.contains("ERR")){
+        ui->datapack_list->addItem("地圖讀取錯誤！");
+        ui->datapack_list->addItem("請至少先選擇一個地圖！");
+        ui->datapack_list->setEnabled(false);
+    }else{
+        for (int i=0;i<=datapack_list.size()-1;i++){
+            ui->datapack_list->addItem(datapack_list.at(i));
+        }
+    }
+}
+
+void MainWindow::on_pushButton_17_clicked()
+{
+    change_to_homepage();
+}
+
+void MainWindow::on_pushButton_12_clicked()
+{
+    QStringList datapack_list = init_map_MSDP_read(ui->world_list->currentItem()->text());
+    QString current_datapack = ui->datapack_list->currentItem()->text();
+    for (int i=0;i<=datapack_list.size()-1;i++){
+        if (datapack_list.at(i) == ui->datapack_list->currentItem()->text()){
+            datapack_list.removeAt(i);
+            i-=1;
+        }
+    }
+    ui->datapack_list->blockSignals(true);
+    qDebug()<<ui->datapack_list->currentRow();
+    ui->datapack_list->clearSelection();
+    ui->datapack_list->takeItem(ui->datapack_list->currentRow());
+    //delete it;
+    qDebug()<<"testtest00612";
+    QFile* datapack_file = new QFile(McDir+"/"+ui->world_list->currentItem()->text()+"/datapacks/"+current_datapack+".zip");
+    datapack_file->remove();
+    QFile* map_information = new QFile(McDir+"/"+ui->world_list->currentItem()->text()+"/Map_Information.MDSP");
+    QJsonObject write_in_later_json;
+    write_in_later_json.insert("datapacks",QJsonArray::fromStringList(datapack_list));
+    QJsonDocument write_in_later_json_document(write_in_later_json);
+    map_information->open(QFile::WriteOnly);
+    map_information->write(write_in_later_json_document.toJson(QJsonDocument::Compact));
+    map_information->resize(map_information->pos());
+    map_information->close();
+}
+
+void MainWindow::on_pushButton_13_clicked()
+{
+    open_datapack_page(ui->datapack_list->currentItem()->text());
+}
+
+void MainWindow::on_pushButton_14_clicked()
+{
+    //report datapack page
 }

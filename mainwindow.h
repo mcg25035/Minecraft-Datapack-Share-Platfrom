@@ -70,6 +70,20 @@ private slots:
     void on_goto_home_2_clicked();
     void on_pushButton_9_clicked();
 
+    void on_Browse_clicked();
+
+    void on_pushButton_11_clicked();
+
+    void on_world_list_currentTextChanged(const QString &currentText);
+
+    void on_pushButton_17_clicked();
+
+    void on_pushButton_12_clicked();
+
+    void on_pushButton_13_clicked();
+
+    void on_pushButton_14_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
