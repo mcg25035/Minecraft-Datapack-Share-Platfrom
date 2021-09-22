@@ -1,0 +1,109 @@
+font setting
+font type
+font size
+language setting
+language
+unable to locate your mc path,please set it.
+mc path setting
+it is enable after login
+browse
+done
+username
+password
+show password
+login
+register
+login/register
+skip login
+status
+search developer or datapacks , two consecutive spaces are not allowed.
+click the datapack icon will take you to that page
+status
+my page
+world manager
+edit profile
+upload<br>datapack
+edit username
+<---set user data board color
+R
+G
+B
+A
+the datapacks belong to this developer
+back to home page
+after upload picture<br>make sure complete edit<br>in 24 hours.
+done
+change<br>user icon
+change<br>background
+edit
+edit datapack name
+edit datapack description
+set support version
+set dependent datapack
+set data board color
+R
+G
+B
+A
+home page
+default picture,no any custom picture
+add background
+delete current<br>background
+done
+id
+name
+select map
+developer
+install
+description
+1/1
+home page
+click image to that page
+search result(datapack)
+search result(developer)
+home page
+edit username
+the datapack develope by this developer
+home page
+world manager
+select world
+select datapack
+remove datapack
+open datapack<br>page
+home page
+error
+program crash
+executing bug report
+edit description
+upload page was open , put the file id in the entry below
+caughting image from internet
+executing server connect
+preparing page
+
+checking user nick
+user nick length must in 1~15 char(s) !
+checking self description
+self description must less than 15000 chars
+install
+installing
+installed
+checking username and password length
+username length must in 8~100 chars
+password must more than 8 chars
+checking username symbol
+username is limited to the chars below
+registration success
+registration falure , same user exist
+wrong username or password
+
+
+server can't find the picture or datapack you upload , please upload again!
+the dependent datapack not exist or removed
+name and description must in 5~15000 chars
+checking
+checking keyword
+select minecraft path
+map read error
+select a map first
+by
+english

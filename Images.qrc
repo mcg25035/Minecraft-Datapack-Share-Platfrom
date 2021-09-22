@@ -10,5 +10,8 @@
         <file>loading.gif</file>
         <file>search.png</file>
     </qresource>
-    <qresource prefix="/"/>
+    <qresource prefix="/LanguageFiles">
+        <file>LanguageFile_zh_TW</file>
+        <file>LanguageFile_en</file>
+    </qresource>
 </RCC>

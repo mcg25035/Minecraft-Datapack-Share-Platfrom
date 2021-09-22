@@ -45,7 +45,8 @@ QString sign_id;
 QString usertoken;
 QString username;
 QJsonObject userdata;
-QString server_url = "https://script.google.com/macros/s/AKfycbzhu1XVOnL_7VEMK-leVlHfHDe60BUOqBjuuJhiJnpNcGk8geZ4NqLWLyQxX8LmWTnC/exec";
+QString server_url = "https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec";
+bool checked_mcdir = false;
 bool trial_mode= true;
 bool login_on = false;
 QString AppDir;
@@ -56,8 +57,143 @@ int datapack_edit_page_max=0;
 int datapack_edit_page_current=0;
 int datapack_view_page_max=0;
 int datapack_view_page_current=1;
+int current_language_index = 0;
 QList <QPixmap> view_page_background_list;
 QStringList bug_information;
+QList <QStringList> Languages;
+
+void MainWindow::Language_init(){
+    if (QDir(AppDir).exists()){
+        if (!QDir(AppDir+"/LanguageFiles").exists()){
+            QDir(AppDir).mkdir("LanguageFiles");
+        }
+        QStringList Language_Files = QDir(AppDir+"/LanguageFiles").entryList();
+        Language_Files.removeAll("..");
+        Language_Files.removeAll(".");
+        qDebug()<<QString("ha");
+        for (int i=0;i<=Language_Files.size()-1;i++){
+            QFile* current_file = new QFile (AppDir+"/LanguageFiles/"+Language_Files.at(i));
+            current_file->open(QFile::ReadOnly);
+            QStringList current_language_strings = QString(current_file->readAll()).split("\n");
+            QStringList new_current_language_strings;
+            for (int i=0;i<=current_language_strings.length()-1;i++){
+                QString temp = current_language_strings.at(i);
+                temp.replace("<br>","\n");
+                new_current_language_strings.append(temp);
+            }
+            Languages.append(new_current_language_strings);
+            current_file->close();
+        }
+        qDebug()<<QString("ha");
+        QStringList Language_Files_ = QDir(":/LanguageFiles").entryList();
+        Language_Files_.removeAll("..");
+        Language_Files_.removeAll(".");
+        for (int i=0;i<=Language_Files_.size()-1;i++){
+            QFile* current_file = new QFile (":/LanguageFiles/"+Language_Files_.at(i));
+            current_file->open(QFile::ReadOnly);
+            QStringList current_language_strings = QString(current_file->readAll()).split("\n");
+            QStringList new_current_language_strings;
+            for (int ii=0;ii<=current_language_strings.length()-1;ii++){
+                QString temp = current_language_strings.at(ii);
+                temp.replace("<br>","\n");
+                new_current_language_strings.append(temp);
+            }
+            Languages.append(new_current_language_strings);
+            current_file->close();
+        }
+        qDebug()<<QString("ha");
+        for (int i=0;i<=Languages.size()-1;i++){
+            ui->comboBox_4->addItem(Languages.at(i).at(108));
+        }
+        qDebug()<<QString("ha4");
+    }
+}
+
+void MainWindow::Language_Setting(QString Language){
+    for (int i=0;i<=Languages.size()-1;i++){
+        if (Languages.at(i).at(108)==Language){
+            current_language_index = i;
+            break;
+        }
+    }
+    ui->comboBox_4->setCurrentText(Language);
+    QStringList current_language = Languages.at(current_language_index);
+    ui->label_38->setText(current_language.at(0));
+    ui->label_61->setText(current_language.at(1));
+    ui->label_62->setText(current_language.at(2));
+    ui->label_63->setText(current_language.at(3));
+    ui->label_64->setText(current_language.at(4));
+    ui->label_15->setText(current_language.at(5));
+    ui->label_40->setText(current_language.at(6));
+    ui->label_14->setText(current_language.at(7));
+    ui->Browse->setText(current_language.at(8));
+    ui->pushButton_2->setText(current_language.at(9));
+    ui->Username->setText(current_language.at(10));
+    ui->Password->setText(current_language.at(11));
+    ui->show_password->setText(current_language.at(12));
+    ui->Login->setText(current_language.at(13));
+    ui->Register->setText(current_language.at(14));
+    ui->LR_Trigger->setText(current_language.at(15));
+    ui->LR_Trigger_2->setText(current_language.at(16));
+    ui->label_6->setText(current_language.at(17));
+    ui->serachbox->setPlaceholderText(current_language.at(18));
+    ui->label_9->setText(current_language.at(19));
+    ui->label_8->setText(current_language.at(20));
+    ui->pushButton_10->setText(current_language.at(21));
+    ui->pushButton_11->setText(current_language.at(22));
+    ui->pushButton_9->setText(current_language.at(23));
+    ui->pushButton_7->setText(current_language.at(24));
+    ui->setpage_username->setPlaceholderText(current_language.at(25));
+    ui->label_31->setText(current_language.at(26));
+    ui->label_32->setText(current_language.at(27));
+    ui->label_33->setText(current_language.at(28));
+    ui->label_34->setText(current_language.at(29));
+    ui->label_35->setText(current_language.at(30));
+    ui->label_30->setText(current_language.at(31));
+    ui->goto_home_2->setText(current_language.at(32));
+    ui->label_18->setText(current_language.at(33));
+    ui->pushButton_5->setText(current_language.at(34));
+    ui->pushButton_6->setText(current_language.at(35));
+    ui->pushButton_4->setText(current_language.at(36));
+    ui->edit_datapack_icon->setText(current_language.at(37));
+    ui->datapack_name_set->setPlaceholderText(current_language.at(38));
+    ui->setdatapackpage_description->setPlaceholderText(current_language.at(39));
+    ui->label_28->setText(current_language.at(40));
+    ui->label_20->setText(current_language.at(41));
+    ui->label_43->setText(current_language.at(42));
+    ui->label_45->setText(current_language.at(43));
+    ui->label_44->setText(current_language.at(44));
+    ui->label_42->setText(current_language.at(45));
+    ui->label_46->setText(current_language.at(46));
+    ui->goto_home->setText(current_language.at(47));
+    ui->datapack_set_picture_index->setText(current_language.at(48));
+    ui->edit_datapack_background->setText(current_language.at(49));
+    ui->remove_datapack_background->setText(current_language.at(50));
+    ui->pushButton_15->setText(current_language.at(51));
+    ui->label_21->setText(current_language.at(52));
+    ui->label_16->setText(current_language.at(53));
+    ui->label_17->setText(current_language.at(54));
+    ui->label_19->setText(current_language.at(55));
+    ui->install_datapack->setText(current_language.at(56));
+    ui->viewdatapackpage_description->setText(current_language.at(57));
+    ui->datapack_view_picture_index->setText(current_language.at(58));
+    ui->back_to_home_page->setText(current_language.at(59));
+    ui->label_10->setText(current_language.at(60));
+    ui->label->setText(current_language.at(61));
+    ui->label_5->setText(current_language.at(62));
+    ui->back_to_home_page_2->setText(current_language.at(63));
+    ui->view_page_username->setText(current_language.at(64));
+    ui->label_36->setText(current_language.at(65));
+    ui->back_to_home_page_3->setText(current_language.at(66));
+    ui->label_12->setText(current_language.at(67));
+    ui->label_2->setText(current_language.at(68));
+    ui->label_13->setText(current_language.at(69));
+    ui->pushButton_12->setText(current_language.at(70));
+    ui->pushButton_13->setText(current_language.at(71));
+    ui->pushButton_17->setText(current_language.at(72));
+    ui->setuserpage_description->setPlaceholderText(current_language.at(76));
+}
+
 QJsonObject StringToJson(QString str){
         QJsonObject obj;
         QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
@@ -74,7 +210,7 @@ QByteArray load_bytearray_from_net(QString fileid,int index){
     QNetworkAccessManager mgr;
 
     QObject::connect(&mgr,SIGNAL(finished(QNetworkReply*)),&eventLoop,SLOT(quit()));
-    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbwBcOaz1nTvaWTohIIj7cacvgInYLdJSVPFZd5-LvvJhzelM3LSNFRC6NRjSIWgD3AZ/exec?fileid="+fileid);
+    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec?fileid="+fileid);
     QNetworkRequest req(url);
     QNetworkReply * reply = mgr.get(req);
     eventLoop.exec();
@@ -102,7 +238,7 @@ QPixmap load_image_from_net(QString fileid,int index){
     QNetworkAccessManager mgr;
 
     QObject::connect(&mgr,SIGNAL(finished(QNetworkReply*)),&eventLoop,SLOT(quit()));
-    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbwBcOaz1nTvaWTohIIj7cacvgInYLdJSVPFZd5-LvvJhzelM3LSNFRC6NRjSIWgD3AZ/exec?fileid="+fileid);
+    QUrl url = QUrl("https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec?fileid="+fileid);
     QNetworkRequest req(url);
     QNetworkReply * reply = mgr.get(req);
     eventLoop.exec();
@@ -336,7 +472,7 @@ QString post(QString connect_type,QByteArray connect_arg=QString("").toUtf8(),bo
         qDebug()<<QString(reply->readAll());
         qDebug()<<reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         QMessageBox messageBox;
-        messageBox.critical(0,"錯誤","Minecraft Datapack Share Platfrom 遇到了無法預期的錯誤，程式即將停止 \n 此次崩潰無法製造八哥蕊破！");
+        messageBox.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
 }
@@ -350,8 +486,8 @@ void MainWindow::bug_report_type_1(QString crash_at, QString crash_recv){
     }
     report_data+="\"";
     ui->Page->setCurrentWidget(ui->loading_page);
-    ui->LR_status->setText("正在執行八哥蕊破...");
-    ui->status->setText("正在執行八哥蕊破...");
+    ui->LR_status->setText(Languages.at(current_language_index).at(75));
+    ui->status->setText(Languages.at(current_language_index).at(75));
     QByteArray data_before_send;
     data_before_send+="report="+report_data.toUtf8().toBase64();
     post("bug_report",data_before_send,false);
@@ -363,7 +499,7 @@ void MainWindow::de_timeout_thread_code(){
     if (!recv.contains("SUCESS")){
         bug_report_type_1("de_timeout_thread",recv);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
 }
@@ -378,7 +514,7 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
     else{
         bug_report_type_1("getting public key",publickey);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
     QString private_key;
@@ -410,7 +546,7 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
         }
         else{
             QMessageBox messageBox;
-            messageBox.critical(0,"錯誤","Minecraft Datapack Share Platfrom 遇到了無法預期的錯誤，程式即將停止");
+            messageBox.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
             (0);
         }
         private_key = "";
@@ -428,7 +564,7 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
     qDebug()<<private_key;
     if (setseesionkeycheck != "SUCESS"){
         QMessageBox messageBox;
-        messageBox.critical(0,"錯誤","Minecraft Datapack Share Platfrom 遇到了無法預期的錯誤，程式即將停止");
+        messageBox.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         (0);
     }
     if (connect_type == "Register"){
@@ -453,7 +589,7 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
     if (connect_type == "GET_USR_DATA"){
         if (trial_mode){
             QByteArray data_before_send = "";
-            data_before_send += "target_username="+arg;
+            data_before_send += "target_username="+arg+"&id="+id;
             QString data_recv = post("get_userdata",data_before_send);
             return data_recv;
         }else{
@@ -519,7 +655,7 @@ QString MainWindow::connect(QString connect_type,QString arg=""){
     if (connect_type == "search"){
         QByteArray data_before_send = "";
         if (trial_mode){
-            data_before_send += "id="+id+"&keyword="+ui->serachbox->text();
+            data_before_send += "id="+id+"&keyword="+ui->serachbox->text().toUtf8().toBase64();
         }else{
             QByteArray token_before_send = encryption.encode(QString(usertoken).toUtf8(),QString(private_key).toUtf8(),QString(private_key).toUtf8()).toBase64().replace("=","");
             data_before_send += "token="+token_before_send+"&username="+username+"&id="+id+"&keyword="+ui->serachbox->text().toUtf8().toBase64();
@@ -562,34 +698,6 @@ MainWindow::MainWindow(QWidget *parent)
     */
     //qDebug()<<read_level_dat("/home/north-bear/.minecraft/saves/menu_test/level.dat");
     ui->setupUi(this);
-    ui->uisettings->setVisible(false);
-    ui->label_15->setVisible(false);
-    QFontDatabase FontDatabase;
-    QStringList fonts = FontDatabase.families();
-    qDebug()<<ui->label_38->font().toString().split(",").at(0);
-    qDebug()<<ui->label_38->font().toString().split(",").at(1).toInt();
-    ui->font_size->setValue(ui->label_38->font().toString().split(",").at(1).toInt());
-    for (int i=0;i<=fonts.size()-1;i++){
-        ui->font->addItem(fonts.at(i));
-    }
-    ui->font->setCurrentText(ui->label_38->font().toString().split(",").at(0));
-    QMovie* loading = new QMovie(":/image/loading.gif");
-    ui->loading->setMovie(loading);
-    ui->user_icon_setting->setStyleSheet("background-color:rgba(0,0,0,0);border-radius:25%;");
-    ui->setuserpage_description->setPlaceholderText("點擊即可編輯簡介");
-    setStyleSheet("QLabel {color: rgb(255,255,255)} QRadioButton {color: rgb(255,255,255)} QPushButton{background-color: rgb(48, 54, 58);color: rgb(255,255,255)} QScrollArea{background: rgb(48, 54, 58)};");
-    ui->Login->click();
-    ui->show_password->click();
-    ui->show_password->click();
-    ui->Page->setStyleSheet("QStackedWidget{border:0.5px solid;border-color:rgb(68,74,78);background-color:rgb(0,0,0);border-radius:4px}");
-    ui->top_container->setStyleSheet("border:0.5px solid;border-color:rgb(68,74,78);border-radius:4px");
-    ui->usericon->setStyleSheet("border:0px solid;border-color:rgb(68,74,78);border-radius:25%;");
-    QPixmap row_user_icon = QPixmap(":/image/user_icon.png");
-    QPixmap big_user_icon = row_user_icon.scaled(51,51);
-    QPixmap row_datapack_icon = QPixmap(":/image/datapackicon.png");
-    QPixmap big_datapack_icon = row_datapack_icon.scaled(51,51);
-    ui->datapack_icon_setting->setPixmap(big_datapack_icon);
-    ui->user_icon_setting->setPixmap(big_user_icon);
     if (os_type=="winnt"){
         AppDir = qgetenv("APPDATA")+"/.Minecraft_Datapack_Share_Platfrom";
         if (!QDir(AppDir).exists()){
@@ -617,6 +725,44 @@ MainWindow::MainWindow(QWidget *parent)
             QDir(QDir::currentPath()).mkdir(".Minecraft_Datapack_Share_Platfrom");
         }
     }
+    ui->uisettings->setVisible(false);
+    ui->label_15->setVisible(false);
+    QFontDatabase FontDatabase;
+    QStringList fonts = FontDatabase.families();
+    qDebug()<<ui->label_38->font().toString().split(",").at(0);
+    qDebug()<<ui->label_38->font().toString().split(",").at(1).toInt();
+    ui->font_size->setValue(ui->label_38->font().toString().split(",").at(1).toInt());
+    qDebug()<<QString("hga");
+    for (int i=0;i<=fonts.size()-1;i++){
+        ui->font->addItem(fonts.at(i));
+    }
+    ui->font->setCurrentText(ui->label_38->font().toString().split(",").at(0));
+    qDebug()<<QString("hga");
+    Language_init();
+    Language_Setting("english");
+    if (QFile(AppDir+"/LanguageSetting.MDSP").exists()){
+        QFile * LanguageFile = new QFile(AppDir+"/LanguageSetting.MDSP");
+        LanguageFile->open(QFile::ReadOnly);
+        Language_Setting(QString(LanguageFile->readAll()));
+        LanguageFile->close();
+    }
+    QMovie* loading = new QMovie(":/image/loading.gif");
+    ui->loading->setMovie(loading);
+    ui->user_icon_setting->setStyleSheet("background-color:rgba(0,0,0,0);border-radius:25%;");
+    ui->setuserpage_description->setPlaceholderText(Languages.at(current_language_index).at(76));
+    setStyleSheet("QLabel {color: rgb(255,255,255)} QRadioButton {color: rgb(255,255,255)} QPushButton{background-color: rgb(48, 54, 58);color: rgb(255,255,255)} QScrollArea{background: rgb(48, 54, 58)};");
+    ui->Login->click();
+    ui->show_password->click();
+    ui->show_password->click();
+    ui->Page->setStyleSheet("QStackedWidget{border:0.5px solid;border-color:rgb(68,74,78);background-color:rgb(0,0,0);border-radius:4px}");
+    ui->top_container->setStyleSheet("border:0.5px solid;border-color:rgb(68,74,78);border-radius:4px");
+    ui->usericon->setStyleSheet("border:0px solid;border-color:rgb(68,74,78);border-radius:25%;");
+    QPixmap row_user_icon = QPixmap(":/image/user_icon.png");
+    QPixmap big_user_icon = row_user_icon.scaled(51,51);
+    QPixmap row_datapack_icon = QPixmap(":/image/datapackicon.png");
+    QPixmap big_datapack_icon = row_datapack_icon.scaled(51,51);
+    ui->datapack_icon_setting->setPixmap(big_datapack_icon);
+    ui->user_icon_setting->setPixmap(big_user_icon);
     login_page_init();
 }
 
@@ -642,14 +788,25 @@ void MainWindow::on_pushButton_2_clicked()
     ui->uisettings->setVisible(false);
     ui->label_15->setVisible(false);
     qApp->processEvents();
-    if (ui->McDir->isEnabled() && dir != ""){
-        McDir = dir+"/saves";
-        QFile * MCPATH = new QFile(AppDir+"/mcpath.MDSP");
-        MCPATH->open(QFile::WriteOnly);
-        MCPATH->write(dir.toUtf8());
-        MCPATH->resize(MCPATH->pos());
-        MCPATH->close();
+    if (ui->McDir->isEnabled()){
+        if (dir != ""){
+            McDir = dir+"/saves";
+            QFile * MCPATH = new QFile(AppDir+"/mcpath.MDSP");
+            MCPATH->open(QFile::WriteOnly);
+            MCPATH->write(dir.toUtf8());
+            MCPATH->resize(MCPATH->pos());
+            MCPATH->close();
+        }
     }
+    if (QDir(AppDir).exists()){
+        QFile * Default_Language = new QFile(AppDir+"/LanguageSetting.MDSP");
+        Default_Language->open(QFile::WriteOnly);
+        Default_Language->write(ui->comboBox_4->currentText().toUtf8());
+        Default_Language->resize(Default_Language->pos());
+        Default_Language->close();
+    }
+
+    Language_Setting(ui->comboBox_4->currentText());
 }
 
 void MainWindow::on_userdatasetR_valueChanged(){
@@ -669,9 +826,9 @@ void MainWindow::on_userdatasetA_valueChanged(){
 }
 
 void MainWindow::on_pushButton_4_clicked(){
-    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbwBcOaz1nTvaWTohIIj7cacvgInYLdJSVPFZd5-LvvJhzelM3LSNFRC6NRjSIWgD3AZ/exec"));
-    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
-    ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec"));
+    QString text = QInputDialog::getText(this," ",Languages.at(current_language_index).at(77),QLineEdit::Normal);
+    ui->status->setText(Languages.at(current_language_index).at(78));
     ui->pushButton_4->setEnabled(false);
     if (text != ""){
         ui->background_setuserpage->setPixmap(load_image_from_net(text,2).scaled(731,381));
@@ -685,9 +842,9 @@ void MainWindow::on_pushButton_4_clicked(){
 }
 
 void MainWindow::on_pushButton_6_clicked(){
-    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbwBcOaz1nTvaWTohIIj7cacvgInYLdJSVPFZd5-LvvJhzelM3LSNFRC6NRjSIWgD3AZ/exec"));
-    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
-    ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec"));
+    QString text = QInputDialog::getText(this," ",Languages.at(current_language_index).at(77),QLineEdit::Normal);
+    ui->status->setText(Languages.at(current_language_index).at(78));
     ui->pushButton_6->setEnabled(false);
     if (text != ""){
         ui->user_icon_setting->setPixmap(load_image_from_net(text,2).scaled(51,51));
@@ -700,15 +857,21 @@ void MainWindow::on_pushButton_6_clicked(){
     ui->pushButton_6->setEnabled(true);
 }
 void MainWindow::change_to_homepage(){
-    ui->main_username->setText(userdata.value("name").toString());
+    if (!trial_mode){
+        ui->main_username->setText(userdata.value("name").toString());
+    }
     app_init();
 }
 
 void MainWindow::after_login_init(){
     if (trial_mode){
+        ui->pushButton_10->setEnabled(false);
+        ui->pushButton_9->setEnabled(false);
+        ui->pushButton_7->setEnabled(false);
+        ui->AppContainer->setCurrentWidget(ui->AppPage);
         change_to_homepage();
     }else{
-        ui->status->setText("執行伺服器溝通...");
+        ui->status->setText(Languages.at(current_language_index).at(79));
         ui->Page->setCurrentWidget(ui->loading_page);
         ui->AppContainer->setCurrentWidget(ui->AppPage);
         QString user_data_ = connect("GET_USR_DATA",username);
@@ -735,7 +898,7 @@ void MainWindow::after_login_init(){
         else{
             bug_report_type_1("after_login_init",user_data_);
             QMessageBox messageBox2;
-            messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+            messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
             exit(0);
         }
     }
@@ -748,14 +911,14 @@ void MainWindow::search_init(){
         }
         delete ui->search_datapack_result->children().at(0);
     }
-    ui->status->setText("執行伺服器溝通...");
+    ui->status->setText(Languages.at(current_language_index).at(79));
     QString recv = connect("search");
     qDebug()<<recv;
     if (!recv.contains("SUCESS")){
         qDebug()<<recv;
         bug_report_type_1("search",recv);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
     ui->status->setText("");
@@ -765,7 +928,7 @@ void MainWindow::search_init(){
     QJsonArray user_result = search_result.value("users").toArray();
     QStringList pixmap_list;
     QStringList pixmap_list2;
-    ui->status->setText("下載圖片...");
+    ui->status->setText(Languages.at(current_language_index).at(78));
     ui->search_datapack_result->setMinimumHeight(datapack_result.size()*91);
     ui->search_user_result->setMinimumHeight(user_result.size()*91);
     for (int i=1;i<=datapack_result.size();i++){
@@ -776,7 +939,7 @@ void MainWindow::search_init(){
     }
     QList <QPixmap> images = batch_get_image(pixmap_list);
     QList <QPixmap> images2 = batch_get_image(pixmap_list2);
-    ui->status->setText("準備頁面...");
+    ui->status->setText(Languages.at(current_language_index).at(80));
     QWidget * recommend_datapack_list_parent_container;
     QPushButton * recommend_datapack_list_picture_show_area;
     QLabel * recommend_datapack_list_datapack_name;
@@ -793,14 +956,14 @@ void MainWindow::search_init(){
         recommend_datapack_list_datapack_name = new QLabel(recommend_datapack_list_parent_container);
         recommend_datapack_list_datapack_name->move(70,20);
         recommend_datapack_list_datapack_name->resize(261,51);
-        recommend_datapack_list_datapack_name->setText(datapack_result.at(i-1).toObject().value("datapack_name").toString()+"\n開發者："+datapack_result.at(i-1).toObject().value("owner_nick").toString());
+        recommend_datapack_list_datapack_name->setText(datapack_result.at(i-1).toObject().value("datapack_name").toString()+"\n"+Languages.at(current_language_index).at(107)+"："+datapack_result.at(i-1).toObject().value("owner_nick").toString());
         recommend_datapack_list_datapack_name->setStyleSheet("color:rgb(255,255,255)");
         recommend_datapack_list_datapack_name->setAlignment(Qt::AlignLeft);
         recommend_datapack_list_parent_container->show();
         recommend_datapack_list_picture_show_area->show();
         recommend_datapack_list_datapack_name->show();
         if (datapack_result.at(i-1).toObject().value("removed").toInt()==1){
-            recommend_datapack_list_datapack_name->setText("資料包已移除");
+            recommend_datapack_list_datapack_name->setText(Languages.at(current_language_index).at(81));
             recommend_datapack_list_picture_show_area->setEnabled(false);
         }
         QObject::connect(recommend_datapack_list_picture_show_area,SIGNAL(clicked()), mapper, SLOT(map()));
@@ -852,8 +1015,9 @@ void MainWindow::app_init(){
         McDir = McDirRow+"/saves";
         ui->McDir->setText(McDirRow);
         MCPATH->close();
-    }else
+    }else if(checked_mcdir == false)
     {
+        checked_mcdir = true;
         if (QDir(McDir+"/.minecraft/saves").exists()){
             McDir += "/.minecraft/saves";
         }
@@ -871,14 +1035,19 @@ void MainWindow::app_init(){
         }
         delete ui->MainPageDatapacks->children().at(0);
     }
-    ui->status->setText("執行伺服器溝通...");
+    ui->status->setText(Languages.at(current_language_index).at(79));
     ui->Page->setCurrentWidget(ui->loading_page);
-    ui->usericon->setPixmap(load_image_from_net(userdata.value("usericon").toString(),2).scaled(51,51));
+    if (trial_mode){
+        ui->usericon->setPixmap(QPixmap(":/image/user_icon.png").scaled(51,51));
+    }else{
+        ui->usericon->setPixmap(load_image_from_net(userdata.value("usericon").toString(),2).scaled(51,51));
+    }
     QString recv = connect("get_recommend");
     if (!recv.contains("SUCESS")){
         bug_report_type_1("getting_recommend_datapack",recv);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        qDebug()<<recv;
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
     ui->status->setText("");
@@ -906,19 +1075,21 @@ void MainWindow::app_init(){
         recommend_datapack_list_picture_show_area = new QPushButton(recommend_datapack_list_parent_container);
         recommend_datapack_list_picture_show_area->move(40,0);
         recommend_datapack_list_picture_show_area->resize(61,61);
-        recommend_datapack_list_picture_show_area->setIcon(QIcon(images.at(i-1)));
-        recommend_datapack_list_picture_show_area->setIconSize(QSize(61,61));
+        if (datapacks.at(i-1).toObject().value("removed").toInt()!=1){
+            recommend_datapack_list_picture_show_area->setIcon(QIcon(images.at(i-1)));
+            recommend_datapack_list_picture_show_area->setIconSize(QSize(61,61));
+        }
         recommend_datapack_list_datapack_name = new QLabel(recommend_datapack_list_parent_container);
         recommend_datapack_list_datapack_name->move(0,61);
         recommend_datapack_list_datapack_name->resize(141,50);
-        recommend_datapack_list_datapack_name->setText(datapacks.at(i-1).toObject().value("datapack_name").toString()+"\n開發者："+datapacks.at(i-1).toObject().value("owner_nick").toString());
+        recommend_datapack_list_datapack_name->setText(datapacks.at(i-1).toObject().value("datapack_name").toString()+"\n"+Languages.at(current_language_index).at(107)+"："+datapacks.at(i-1).toObject().value("owner_nick").toString());
         recommend_datapack_list_datapack_name->setStyleSheet("color:rgb(255,255,255)");
         recommend_datapack_list_datapack_name->setAlignment(Qt::AlignCenter);
         recommend_datapack_list_parent_container->show();
         recommend_datapack_list_picture_show_area->show();
         recommend_datapack_list_datapack_name->show();
         if (datapacks.at(i-1).toObject().value("removed").toInt()==1){
-            recommend_datapack_list_datapack_name->setText("資料包已移除");
+            recommend_datapack_list_datapack_name->setText(Languages.at(current_language_index).at(81));
             recommend_datapack_list_picture_show_area->setEnabled(false);
         }
         QObject::connect(recommend_datapack_list_picture_show_area,SIGNAL(clicked()), mapper, SLOT(map()));
@@ -951,16 +1122,16 @@ void MainWindow::back_to_login_page(){
 
 void MainWindow::on_pushButton_5_clicked(){
     //my_page_edit.insert("name","")
-    ui->status->setText("執行使用者暱稱檢查");
+    ui->status->setText(Languages.at(current_language_index).at(82));
     if (ui->setpage_username->text()=="" || ui->setpage_username->text().length()>=15){
         QMessageBox messageBox;
-        messageBox.warning(0,"錯誤","使用者暱稱必須介於1到15個字元之間");
+        messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(83));
         return;
     }
-    ui->status->setText("執行自我介紹長度檢查");
+    ui->status->setText(Languages.at(current_language_index).at(84));
     if (ui->setuserpage_description->toPlainText().length()>=15000){
         QMessageBox messageBox;
-        messageBox.warning(0,"錯誤","自我介紹必須少於15000個字元");
+        messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(85));
         return;
     }
     QJsonArray RGBAArray;
@@ -978,7 +1149,7 @@ void MainWindow::on_pushButton_5_clicked(){
     my_page_edit.insert("description",ui->setuserpage_description->toPlainText());
     my_page_edit.insert("display_board_color",RGBAArray);
     ui->Page->setCurrentWidget(ui->loading_page);
-    ui->status->setText("執行伺服器溝通...");
+    ui->status->setText(Languages.at(current_language_index).at(79));
     QString recv = connect("set_userdata");
     if (recv == "SUCESS"){
         ui->status->setText("");
@@ -987,13 +1158,13 @@ void MainWindow::on_pushButton_5_clicked(){
     }else{
         bug_report_type_1("setting_userdata",recv);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
 }
 void MainWindow::open_datapack_page(QString datapack_id){
     ui->install_datapack->setEnabled(true);
-    ui->install_datapack->setText("安裝");
+    ui->install_datapack->setText(Languages.at(current_language_index).at(86));
     ui->Page->setCurrentWidget(ui->loading_page);
     QString recv = MainWindow::connect("get_datapack",datapack_id);
     if (recv.contains("SUCESS")){
@@ -1036,7 +1207,7 @@ void MainWindow::open_datapack_page(QString datapack_id){
     else{
         bug_report_type_1("getting_datapack_data",recv);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
 
@@ -1044,7 +1215,7 @@ void MainWindow::open_datapack_page(QString datapack_id){
 void MainWindow::open_user_page(QString userid){
     qDebug()<<userid;
     ui->Page->setCurrentWidget(ui->loading_page);
-    ui->status->setText("執行伺服器溝通...");
+    ui->status->setText(Languages.at(current_language_index).at(79));
     while (ui->user_view_page_datapacks->children().size()!=0){
         while (ui->user_view_page_datapacks->children().at(0)->children().size()!=0){
             delete ui->user_view_page_datapacks->children().at(0)->children().at(0);
@@ -1055,7 +1226,7 @@ void MainWindow::open_user_page(QString userid){
     if (!recv.contains("SUCESS")){
         bug_report_type_1("opening_user_page",recv);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
     }
     QJsonObject user_page_view_data = StringToJson(recv.split("**mdsp_split_tag**").at(1));
@@ -1075,9 +1246,9 @@ void MainWindow::open_user_page(QString userid){
     for (int i=1;i<=current_user_datapacks.size();i++){
         pixmap_list.append(current_user_datapacks.at(i-1).toObject().value("datapack_icon").toString());
     }
-    ui->status->setText("下載圖片...");
+    ui->status->setText(Languages.at(current_language_index).at(78));
     QList <QPixmap> images = batch_get_image(pixmap_list);
-    ui->status->setText("載入頁面...");
+    ui->status->setText(Languages.at(current_language_index).at(80));
     ui->user_view_page_datapacks->setMinimumWidth(141*current_user_datapacks.size());
     for (int i=1;i<=current_user_datapacks.size();i++){
         recommend_datapack_list_parent_container = new QWidget(ui->user_view_page_datapacks);
@@ -1098,7 +1269,7 @@ void MainWindow::open_user_page(QString userid){
         recommend_datapack_list_picture_show_area->show();
         recommend_datapack_list_datapack_name->show();
         if (current_user_datapacks.at(i-1).toObject().value("removed").toInt()==1){
-            recommend_datapack_list_datapack_name->setText("資料包已移除");
+            recommend_datapack_list_datapack_name->setText(Languages.at(current_language_index).at(81));
             recommend_datapack_list_picture_show_area->setEnabled(false);
         }
         QObject::connect(recommend_datapack_list_picture_show_area,SIGNAL(clicked()), mapper, SLOT(map()));
@@ -1117,44 +1288,44 @@ void MainWindow::on_LR_Trigger_clicked()
     if (ui->Register->isChecked()){
         ui->LR_username->setEnabled(false);
         ui->LR_password->setEnabled(false);
-        ui->LR_status->setText("執行帳密長度檢查...");
+        ui->LR_status->setText(Languages.at(current_language_index).at(89));
         if (ui->LR_username->text().length()<8 || ui->LR_username->text().length()>100){
             QMessageBox messageBox;
-            messageBox.warning(0,"錯誤","帳號必須介於8到100個字元之間");
+            messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(90));
             ui->LR_status->setText("");
             return;
         }
         if (ui->LR_password->text().length()<8){
             QMessageBox messageBox;
-            messageBox.warning(0,"錯誤","密碼必須多於8個字元");
+            messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(91));
             ui->LR_status->setText("");
             return;
         }
-        ui->LR_status->setText("執行帳號字元檢查...");
+        ui->LR_status->setText(Languages.at(current_language_index).at(92));
         for (int i=1;i<=ui->LR_username->text().length();i++){
             if (!QString("0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~").contains(ui->LR_username->text().at(i-1))){
                 QMessageBox messageBox;
-                messageBox.warning(0,"錯誤","帳號僅限於以下字元\n0~9、a~z、A~Z、:;<=>[\\]^_'{|}~@");
+                messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(93)+"\n0~9、a~z、A~Z、:;<=>[\\]^_'{|}~@");
                 ui->LR_status->setText("");
                 return;
             }
         }
         ui->LR_status->setText("");
-        ui->LR_status->setText("執行伺服器溝通...");
+        ui->LR_status->setText(Languages.at(current_language_index).at(79));
         QString status = MainWindow::connect("Register");
         ui->LR_username->setEnabled(true);
         ui->LR_password->setEnabled(true);
         if (status=="SUCESS"){
-            ui->LR_status->setText("註冊成功!");
+            ui->LR_status->setText(Languages.at(current_language_index).at(94));
             return;
         }
         if (status=="ERR.REGED"){
-            ui->LR_status->setText("註冊失敗，已經有同帳號使用者存在!");
+            ui->LR_status->setText(Languages.at(current_language_index).at(95));
             return;
         }
         bug_report_type_1("register",status);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
 
     }
@@ -1162,10 +1333,10 @@ void MainWindow::on_LR_Trigger_clicked()
         ui->LR_username->setEnabled(false);
         ui->LR_password->setEnabled(false);
         username = ui->LR_username->text();
-        ui->LR_status->setText("執行伺服器溝通...");
+        ui->LR_status->setText(Languages.at(current_language_index).at(79));
         for (int i=1;i<=ui->LR_username->text().length();i++){
             if (!QString("0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~").contains(ui->LR_username->text().at(i-1))){
-                ui->LR_status->setText("帳號或密碼錯誤");
+                ui->LR_status->setText(Languages.at(current_language_index).at(96));
                 return;
             }
         }
@@ -1180,17 +1351,17 @@ void MainWindow::on_LR_Trigger_clicked()
             user_login_data->write(QString(ui->LR_username->text()+","+ui->LR_password->text()).toUtf8());
             user_login_data->resize(user_login_data->pos());
             user_login_data->close();
-            ui->LR_status->setText("執行伺服器溝通...");
+            ui->LR_status->setText(Languages.at(current_language_index).at(79));
             after_login_init();
             return;
         }
         if (status=="ERR.USRORPWD"){
-            ui->LR_status->setText("帳號或密碼錯誤");
+            ui->LR_status->setText(Languages.at(current_language_index).at(96));
             return;
         }
         bug_report_type_1("login",status);
         QMessageBox messageBox2;
-        messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+        messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
         exit(0);
 
     }
@@ -1228,14 +1399,14 @@ void MainWindow::on_datapackdatasetA_valueChanged(int arg1)
 void MainWindow::datapack_set_change_image(){
     if (datapack_page_background.size()==0){
         ui->set_datapack_background->setPixmap(QPixmap(":/image/Deafault_Background.png"));
-        ui->datapack_set_picture_index->setText("目前是預設圖片，沒有任何自定義圖片");
+        ui->datapack_set_picture_index->setText(Languages.at(current_language_index).at(48));
         datapack_edit_page_current = 0;
     }else{
         if (datapack_page_background.size()==1){
             datapack_edit_page_current=1;
         }
-        ui->datapack_set_picture_index->setText("第 "+QString::number(datapack_edit_page_current)+" / "+QString::number(datapack_page_background.size())+" 張");
-        ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
+        ui->datapack_set_picture_index->setText(Languages.at(current_language_index).at(97)+QString::number(datapack_edit_page_current)+" / "+QString::number(datapack_page_background.size())+Languages.at(current_language_index).at(98));
+        ui->status->setText(Languages.at(current_language_index).at(78));
         ui->pushButton_8->setEnabled(false);
         ui->pushButton_16->setEnabled(false);
         ui->edit_datapack_background->setEnabled(false);
@@ -1248,7 +1419,7 @@ void MainWindow::datapack_set_change_image(){
 
 }
 void MainWindow::datapack_view_change_image(){
-    ui->datapack_view_picture_index->setText("第 "+QString::number(datapack_view_page_current)+" / "+QString::number(view_page_background_list.size())+" 張");
+    ui->datapack_view_picture_index->setText(Languages.at(current_language_index).at(97)+QString::number(datapack_view_page_current)+" / "+QString::number(view_page_background_list.size())+Languages.at(current_language_index).at(98));
     ui->datapack_view_page_background->setPixmap(view_page_background_list.at(datapack_view_page_current-1).scaled(781,381));
 }
 void MainWindow::on_pushButton_8_clicked()
@@ -1296,9 +1467,9 @@ void MainWindow::on_edit_datapack_background_clicked()
 {
     ui->edit_datapack_background->setEnabled(false);
     ui->remove_datapack_background->setEnabled(false);
-    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbwBcOaz1nTvaWTohIIj7cacvgInYLdJSVPFZd5-LvvJhzelM3LSNFRC6NRjSIWgD3AZ/exec"));
-    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於伺服器的圖檔會被移除",QLineEdit::Normal);
-    ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec"));
+    QString text = QInputDialog::getText(this," ",Languages.at(current_language_index).at(77),QLineEdit::Normal);
+    ui->status->setText(Languages.at(current_language_index).at(78));
     if (text != ""){
         datapack_page_background.append(text);
     }
@@ -1310,9 +1481,9 @@ void MainWindow::on_edit_datapack_background_clicked()
 
 void MainWindow::on_edit_datapack_icon_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbwBcOaz1nTvaWTohIIj7cacvgInYLdJSVPFZd5-LvvJhzelM3LSNFRC6NRjSIWgD3AZ/exec"));
-    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n上傳後請輸入網站提供的檔案id\n並且在12小時內完成設定\n否則存在於上傳的圖檔會被移除",QLineEdit::Normal);
-    ui->status->setText("正在嘗試從雲端硬碟取得圖片...");
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec"));
+    QString text = QInputDialog::getText(this," ",Languages.at(current_language_index).at(77),QLineEdit::Normal);
+    ui->status->setText(Languages.at(current_language_index).at(78));
     if (text != ""){
         ui->datapack_icon_setting->setPixmap(load_image_from_net(text,2).scaled(50,50));
         if (datapack_page_edit.contains("datapack_icon")){
@@ -1351,8 +1522,8 @@ void MainWindow::on_pushButton_22_clicked()
 
 void MainWindow::on_pushButton_15_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbwBcOaz1nTvaWTohIIj7cacvgInYLdJSVPFZd5-LvvJhzelM3LSNFRC6NRjSIWgD3AZ/exec"));
-    QString text = QInputDialog::getText(this," ","程式已經在你的預設瀏覽器打開上傳網站\n請上傳資料包後請輸入網站提供的檔案id",QLineEdit::Normal);
+    QDesktopServices::openUrl(QUrl("https://script.google.com/macros/s/AKfycbyshoAw-hPFycZqb8CR_1OoTD8AFkHHMTU43urlSvbLaxlQWTHBE99FbIjNlSH7Y43s/exec"));
+    QString text = QInputDialog::getText(this," ",Languages.at(current_language_index).at(77),QLineEdit::Normal);
     if (text != ""){
         datapack_page_edit.insert(QString("datapack"),text);
         if (ui->datapack_name_set->text().length()>=5&&ui->datapack_name_set->text().length()<=15000&&ui->setdatapackpage_description->toPlainText().length()>=5&&ui->setdatapackpage_description->toPlainText().length()<=15000){
@@ -1377,26 +1548,26 @@ void MainWindow::on_pushButton_15_clicked()
             datapack_page_edit.insert("preset_datapack",pre_set_datapack);
             datapack_page_edit.insert("support_version_1",ui->support_version1->currentText());
             datapack_page_edit.insert("support_version_2",ui->support_version2->currentText());
-            ui->status->setText("執行伺服器溝通...");
+            ui->status->setText(Languages.at(current_language_index).at(79));
             QString recv = connect("upload_datapack");
             if (recv.contains("SUCESS")){
                 change_to_homepage();
             }
             else if (recv=="ERR.NOFILE"){
                 QMessageBox messageBox;
-                messageBox.warning(0,"錯誤","伺服器偵測不到你上傳的資料包或是圖片，請保證自己上傳的資料包符合資料包上架規定，否則將有可能帳號被停用數天");
+                messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(99));
                 return;
             }
             else if (recv=="ERR.PRESETDPPACK"){
                 QMessageBox messageBox;
-                messageBox.warning(0,"錯誤","你引用的前置資料包不存在或是已經被移除");
+                messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(100));
                 return;
             }
             else
             {
                 bug_report_type_1("setting_datapack",recv);
                 QMessageBox messageBox2;
-                messageBox2.critical(0,"錯誤","由於未知的錯誤，程式無法繼續執行");
+                messageBox2.critical(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(74));
                 exit(0);
             }
             ui->status->setText("");
@@ -1405,7 +1576,7 @@ void MainWindow::on_pushButton_15_clicked()
         else
         {
             QMessageBox messageBox;
-            messageBox.warning(0,"錯誤","資料包名稱和資料包敘述都各需介於5~15000個字元之間");
+            messageBox.warning(0,Languages.at(current_language_index).at(73),Languages.at(current_language_index).at(101));
             return;
         }
     }
@@ -1448,7 +1619,7 @@ void MainWindow::on_install_datapack_clicked()
     ui->map_list->setEnabled(false);
     ui->install_datapack->setEnabled(false);
     ui->back_to_home_page->setEnabled(false);
-    ui->install_datapack->setText("安裝中");
+    ui->install_datapack->setText(Languages.at(current_language_index).at(87));
     if (ui->map_list->currentText()!=""){
         QString recv = connect("get_all_preset_datapack");
         qDebug()<<recv;
@@ -1467,7 +1638,7 @@ void MainWindow::on_install_datapack_clicked()
             if (file_list.contains("error")){
                 ui->install_datapack->setEnabled(true);
                 ui->back_to_home_page->setEnabled(true);
-                ui->install_datapack->setText("安裝");
+                ui->install_datapack->setText(Languages.at(current_language_index).at(86));
                 ui->map_list->setEnabled(true);
                 qDebug()<<QString("Error1");
                 return;
@@ -1480,7 +1651,7 @@ void MainWindow::on_install_datapack_clicked()
                     datapack_file->close();
                     ui->install_datapack->setEnabled(true);
                     ui->back_to_home_page->setEnabled(true);
-                    ui->install_datapack->setText("安裝");
+                    ui->install_datapack->setText(Languages.at(current_language_index).at(86));
                     ui->map_list->setEnabled(true);
                     qDebug()<<QString("Error2");
                     return;
@@ -1500,14 +1671,14 @@ void MainWindow::on_install_datapack_clicked()
             map_information->resize(map_information->pos());
             map_information->close();
             ui->install_datapack->setEnabled(false);
-            ui->install_datapack->setText("已安裝");
+            ui->install_datapack->setText(Languages.at(current_language_index).at(88));
             ui->back_to_home_page->setEnabled(true);
             ui->map_list->setEnabled(true);
         }
         else{
             ui->install_datapack->setEnabled(true);
             ui->back_to_home_page->setEnabled(true);
-            ui->install_datapack->setText("安裝");
+            ui->install_datapack->setText(Languages.at(current_language_index).at(86));
             ui->map_list->setEnabled(true);
             return;
         }
@@ -1519,23 +1690,23 @@ void MainWindow::on_map_list_currentTextChanged(const QString &arg1)
 {
     ui->install_datapack->setEnabled(false);
     ui->map_list->setEnabled(false);
-    ui->install_datapack->setText("檢查中");
+    ui->install_datapack->setText(Languages.at(current_language_index).at(102));
     QString selected_map = arg1;
     QStringList map_datapack_installed = init_map_MSDP_read(selected_map);
     ui->map_list->setEnabled(true);
     ui->map_list->setEnabled(true);
     if (map_datapack_installed.contains(ui->datapack_view_id->text())){
         ui->install_datapack->setEnabled(false);
-        ui->install_datapack->setText("已安裝");
+        ui->install_datapack->setText(Languages.at(current_language_index).at(88));
     }
     else if (map_datapack_installed.contains("ERR")){
         ui->install_datapack->setEnabled(false);
-        ui->install_datapack->setText("錯誤");
+        ui->install_datapack->setText(Languages.at(current_language_index).at(73));
     }
     else
     {
         ui->install_datapack->setEnabled(true);
-        ui->install_datapack->setText("安裝");
+        ui->install_datapack->setText(Languages.at(current_language_index).at(86));
     }
     //if ()
 }
@@ -1543,7 +1714,7 @@ void MainWindow::on_map_list_currentTextChanged(const QString &arg1)
 void MainWindow::on_pushButton_3_clicked()
 {
     if (ui->serachbox->text() != ""){
-        ui->status->setText("檢查關鍵字");
+        ui->status->setText(Languages.at(current_language_index).at(103));
         QStringList keyword_check = ui->serachbox->text().split(" ");
         for (int i=0;i<=keyword_check.size()-1;i++){
             if (keyword_check.at(i)==""){
@@ -1602,7 +1773,7 @@ void MainWindow::on_pushButton_9_clicked()
 
 void MainWindow::on_Browse_clicked()
 {
-    dir = QFileDialog::getExistingDirectory(this, "選擇麥塊資料夾","",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    dir = QFileDialog::getExistingDirectory(this, Languages.at(current_language_index).at(104),"",QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     dir = dir.replace("minecraft/","minecraft").replace("minecraft\\","minecraft");
     ui->McDir->setText(dir);
 }
@@ -1624,8 +1795,8 @@ void MainWindow::on_world_list_currentTextChanged(const QString &currentText)
     ui->datapack_list->clear();
     QStringList datapack_list = init_map_MSDP_read(currentText);
     if (datapack_list.contains("ERR")){
-        ui->datapack_list->addItem("地圖讀取錯誤！");
-        ui->datapack_list->addItem("請至少先選擇一個地圖！");
+        ui->datapack_list->addItem(Languages.at(current_language_index).at(105));
+        ui->datapack_list->addItem(Languages.at(current_language_index).at(106));
         ui->datapack_list->setEnabled(false);
     }else{
         for (int i=0;i<=datapack_list.size()-1;i++){
@@ -1669,10 +1840,18 @@ void MainWindow::on_pushButton_12_clicked()
 
 void MainWindow::on_pushButton_13_clicked()
 {
-    open_datapack_page(ui->datapack_list->currentItem()->text());
+
+    if (ui->datapack_list->selectedItems().size()!=0){
+        open_datapack_page(ui->datapack_list->currentItem()->text());
+    }
 }
 
 void MainWindow::on_pushButton_14_clicked()
 {
     //report datapack page
+}
+
+void MainWindow::on_LR_Trigger_2_clicked()
+{
+    after_login_init();
 }

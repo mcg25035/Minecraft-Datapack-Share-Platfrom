@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Minecraft Datapack Sharing Platform</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QStackedWidget" name="AppContainer">
@@ -123,8 +123,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>707</width>
-           <height>147</height>
+           <width>709</width>
+           <height>149</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -178,7 +178,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>為你推薦的資料包，點擊資料包圖示即可前往該資料包頁面</string>
+         <string>隨機推薦的資料包，點擊資料包圖示即可前往該資料包頁面</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButton_9">
@@ -291,8 +291,8 @@
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Noto Sans'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="placeholderText">
           <string>因為這裡不支援我換行，我直接寫在程式</string>
@@ -351,7 +351,7 @@ p, li { white-space: pre-wrap; }
            <x>0</x>
            <y>0</y>
            <width>1000</width>
-           <height>86</height>
+           <height>109</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -383,7 +383,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>200</y>
-          <width>201</width>
+          <width>701</width>
           <height>18</height>
          </rect>
         </property>
@@ -394,7 +394,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QSpinBox" name="userdatasetG">
         <property name="geometry">
          <rect>
-          <x>580</x>
+          <x>530</x>
           <y>50</y>
           <width>52</width>
           <height>32</height>
@@ -410,7 +410,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QSpinBox" name="userdatasetB">
         <property name="geometry">
          <rect>
-          <x>530</x>
+          <x>580</x>
           <y>50</y>
           <width>52</width>
           <height>32</height>
@@ -442,7 +442,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_33">
         <property name="geometry">
          <rect>
-          <x>580</x>
+          <x>530</x>
           <y>30</y>
           <width>41</width>
           <height>18</height>
@@ -458,7 +458,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_34">
         <property name="geometry">
          <rect>
-          <x>530</x>
+          <x>580</x>
           <y>30</y>
           <width>41</width>
           <height>18</height>
@@ -476,7 +476,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>630</x>
           <y>30</y>
-          <width>151</width>
+          <width>185</width>
           <height>18</height>
          </rect>
         </property>
@@ -783,7 +783,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>530</x>
           <y>40</y>
-          <width>101</width>
+          <width>201</width>
           <height>18</height>
          </rect>
         </property>
@@ -828,7 +828,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>330</x>
           <y>200</y>
-          <width>251</width>
+          <width>401</width>
           <height>18</height>
          </rect>
         </property>
@@ -1002,8 +1002,8 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Noto Sans'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="placeholderText">
           <string>點擊編輯資料包敘述</string>
@@ -1153,7 +1153,10 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="font">
           <font>
+           <family>.SF NS Text</family>
            <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="styleSheet">
@@ -1249,8 +1252,8 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Noto Sans'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="overwriteMode">
           <bool>true</bool>
@@ -1309,7 +1312,7 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>70</x>
            <y>10</y>
-           <width>81</width>
+           <width>91</width>
            <height>21</height>
           </rect>
          </property>
@@ -1328,7 +1331,7 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>70</x>
            <y>30</y>
-           <width>81</width>
+           <width>91</width>
            <height>20</height>
           </rect>
          </property>
@@ -1369,7 +1372,7 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>80</x>
            <y>50</y>
-           <width>71</width>
+           <width>81</width>
            <height>20</height>
           </rect>
          </property>
@@ -1417,7 +1420,7 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>80</x>
            <y>70</y>
-           <width>71</width>
+           <width>81</width>
            <height>20</height>
           </rect>
          </property>
@@ -1442,6 +1445,7 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="font">
           <font>
+           <family>.SF NS Text</family>
            <weight>75</weight>
            <bold>true</bold>
            <underline>true</underline>
@@ -1629,8 +1633,8 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>357</width>
-           <height>307</height>
+           <width>359</width>
+           <height>309</height>
           </rect>
          </property>
         </widget>
@@ -1668,8 +1672,8 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>356</width>
-           <height>307</height>
+           <width>358</width>
+           <height>309</height>
           </rect>
          </property>
         </widget>
@@ -1771,8 +1775,8 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Noto Sans'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="placeholderText">
           <string>因為這裡不支援我換行，我直接寫在程式</string>
@@ -1830,8 +1834,8 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>707</width>
-           <height>97</height>
+           <width>709</width>
+           <height>99</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -1882,7 +1886,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>200</y>
-          <width>201</width>
+          <width>701</width>
           <height>18</height>
          </rect>
         </property>
@@ -1996,19 +2000,6 @@ p, li { white-space: pre-wrap; }
          <string>開啟資料包頁面</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_14">
-        <property name="geometry">
-         <rect>
-          <x>607</x>
-          <y>160</y>
-          <width>111</width>
-          <height>34</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>檢舉資料包</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="pushButton_17">
         <property name="geometry">
          <rect>
@@ -2056,7 +2047,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="text">
-        <string>訪客</string>
+        <string>Guest</string>
        </property>
       </widget>
       <widget class="QPushButton" name="setting_button">
@@ -2133,14 +2124,17 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="Username">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>180</x>
         <y>280</y>
-        <width>41</width>
+        <width>71</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
        <string>帳號</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
      <widget class="QLineEdit" name="LR_username">
@@ -2169,14 +2163,17 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="Password">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>180</x>
         <y>320</y>
-        <width>41</width>
+        <width>71</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
        <string>密碼</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
      <widget class="QPushButton" name="LR_Trigger">
@@ -2309,7 +2306,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Version : DEV 0.1</string>
+       <string>Version : Release 0.0.1</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="show_password">
@@ -2317,7 +2314,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>260</x>
         <y>350</y>
-        <width>88</width>
+        <width>301</width>
         <height>22</height>
        </rect>
       </property>
@@ -2325,250 +2322,250 @@ p, li { white-space: pre-wrap; }
        <string>顯示密碼</string>
       </property>
      </widget>
-     <widget class="QWidget" name="uisettings" native="true">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>370</x>
-        <y>-320</y>
-        <width>791</width>
-        <height>561</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Noto Sans</family>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:rgba(48,54,58,255)</string>
-      </property>
-      <widget class="QSpinBox" name="font_size">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>120</y>
-         <width>52</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="value">
-        <number>10</number>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_38">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>60</y>
-         <width>191</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Noto Sans</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>字體設定</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_61">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>90</y>
-         <width>61</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>字型</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="comboBox_4">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>280</x>
-         <y>250</y>
-         <width>351</width>
-         <height>32</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_62">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>120</y>
-         <width>61</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>字體大小</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_63">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>230</y>
-         <width>241</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>語言設定</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_64">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>260</y>
-         <width>58</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>語言</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="geometry">
-        <rect>
-         <x>534</x>
-         <y>490</y>
-         <width>88</width>
-         <height>34</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>完成設定</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_8">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>160</y>
-         <width>691</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="font">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>90</y>
-         <width>351</width>
-         <height>32</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="Line" name="line_9">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>330</y>
-         <width>691</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_40">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>400</y>
-         <width>451</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>麥塊資料夾路徑設定</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="McDir">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>420</y>
-         <width>291</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="Browse">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>560</x>
-         <y>420</y>
-         <width>61</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>瀏覽</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_14">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>460</y>
-         <width>351</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>離開登入頁面後即可設定</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_15">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>380</y>
-         <width>381</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>由於程式無法偵測到你的麥塊資料夾，請手動設定</string>
-       </property>
-      </widget>
-     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="uisettings" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>791</width>
+      <height>561</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Noto Sans</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgba(48,54,58,255)</string>
+    </property>
+    <widget class="QSpinBox" name="font_size">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>120</y>
+       <width>52</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>10</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_38">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>60</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Noto Sans</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>字體設定</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_61">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>90</y>
+       <width>61</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>字型</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_4">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>250</y>
+       <width>341</width>
+       <height>32</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_62">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>120</y>
+       <width>61</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>字體大小</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_63">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>230</y>
+       <width>241</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>語言設定</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_64">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>260</y>
+       <width>58</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>語言</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>534</x>
+       <y>490</y>
+       <width>88</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>完成設定</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_8">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>160</y>
+       <width>691</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="font">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>90</y>
+       <width>351</width>
+       <height>32</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="Line" name="line_9">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>330</y>
+       <width>691</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_40">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>400</y>
+       <width>451</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>麥塊資料夾路徑設定</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="McDir">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>420</y>
+       <width>291</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="Browse">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>560</x>
+       <y>420</y>
+       <width>61</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>瀏覽</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>460</y>
+       <width>351</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>離開登入頁面後即可設定</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>380</y>
+       <width>381</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>由於程式無法偵測到你的麥塊資料夾，請手動設定</string>
+     </property>
     </widget>
    </widget>
   </widget>

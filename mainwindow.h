@@ -84,6 +84,9 @@ private slots:
 
     void on_pushButton_14_clicked();
 
+    void on_LR_Trigger_2_clicked();
+    void Language_Setting(QString Language);
+    void Language_init();
 private:
     Ui::MainWindow *ui;
 };
